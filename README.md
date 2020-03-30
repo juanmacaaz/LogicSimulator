@@ -1,2 +1,3 @@
-# electronica-digital
-Proyecto de electronica digital
+# LogicSimulator
+Proyecto de Metedologia de la programacion.
+Univarsitat autonoma de Barcelona.
