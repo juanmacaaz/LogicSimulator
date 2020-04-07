@@ -8,6 +8,7 @@ Diagram::Diagram(GCursor* cursor)
     m_cursor = cursor;
     m_gates = QList<GGate*>();
     m_lines = QList<GCable*>();
+    m_ids = 0;
     setSceneRect(0, 0, 10000, 10000);
     QObject::connect(m_cursor, SIGNAL(cableCreated(GVertex*, GVertex*)), this, SLOT(cableIsCreated(GVertex*,GVertex*)));
 }
@@ -28,10 +29,10 @@ void Diagram::addGate(GGate::Element type, int x, int y)
 {
     GGate *newGate;
     switch (type) {
-        case GGate::AND: newGate = new GAnd(x, y, m_gates.size()); break;
-        case GGate::OR: newGate = new GOr(x, y, m_gates.size()); break;
-        case GGate::INV: newGate = new GInv(x, y, m_gates.size()); break;
-        case GGate::XOR: newGate = new GXor(x, y, m_gates.size()); break;
+        case GGate::AND: newGate = new GAnd(x, y, getId()); break;
+        case GGate::OR:  newGate = new GOr (x, y, getId()); break;
+        case GGate::INV: newGate = new GInv(x, y, getId()); break;
+        case GGate::XOR: newGate = new GXor(x, y, getId()); break;
         default: newGate = new GGate(0,0); break;
     }
     m_gates.push_back(newGate);
@@ -73,7 +74,6 @@ void Diagram::addCable(GVertex* a, GVertex* b)
         addItem(line);
         QObject::connect(line, SIGNAL(cableClick(GCable*)), this, SLOT(cableIsCliked(GCable*)));
     }
-    listLines();
 }
 
 void Diagram::deleteCable(GCable* cable)
@@ -88,11 +88,11 @@ void Diagram::addInOut(GGate::Element type, int x, int y)
 {
     GInOut* newInout;
     if(type == GGate::INPUT) {
-        newInout = new GInOut(x, y, true, "a");
+        newInout = new GInOut(x, y, true, getId());
         addItem(newInout->getVertexB());
         QObject::connect(newInout->getVertexB(), SIGNAL(vertexClick(GVertex*)), m_cursor, SLOT(vertexIsClick(GVertex*)));
     }else {
-        newInout = new GInOut(x, y, false, "a");
+        newInout = new GInOut(x, y, false, getId());
         addItem(newInout->getVertexA());
         QObject::connect(newInout->getVertexA(), SIGNAL(vertexClick(GVertex*)), m_cursor, SLOT(vertexIsClick(GVertex*)));
     }
@@ -111,32 +111,39 @@ bool Diagram::isInCableList(GCable *cable)
     return false;
 }
 
-void Diagram::listLines()
+QString Diagram::generateFunction()
 {
+    Conections c;
     for(GCable* lines: m_lines) {
-        if(GAnd* v = dynamic_cast<GAnd*>(lines->getVertexA()->getGate())) {
-            qInfo() << "AND," << v->getId();
-        }else if(GOr* v = dynamic_cast<GOr*>(lines->getVertexA()->getGate())) {
-            qInfo() << "OR," << v->getId();
-        }else if(GXor* v = dynamic_cast<GXor*>(lines->getVertexA()->getGate())) {
-            qInfo() << "XOR," << v->getId();
-        }else if(GInv* v = dynamic_cast<GInv*>(lines->getVertexA()->getGate())) {
-            qInfo() << "INV," << v->getId();
-        }else if(GInOut* v = dynamic_cast<GInOut*>(lines->getVertexA()->getGate())) {
-            qInfo() << "INOUT," << v->getVarName();
-        }
+        Point left =  getParentInfo(lines->getVertexA()->getGate());
+        Point right = getParentInfo(lines->getVertexB()->getGate());
+        c.addCable(Cable(Point(left),Point(right)));
+    }
+    for(string s: c.getFunctions()) {
+        qInfo() << QString::fromUtf8(s.c_str());
+    }
 
-        if(GAnd* v = dynamic_cast<GAnd*>(lines->getVertexB()->getGate())) {
-            qInfo() << "AND," << v->getId();
-        }else if(GOr* v = dynamic_cast<GOr*>(lines->getVertexB()->getGate())) {
-            qInfo() << "OR," << v->getId();
-        }else if(GXor* v = dynamic_cast<GXor*>(lines->getVertexB()->getGate())) {
-            qInfo() << "XOR," << v->getId();
-        }else if(GInv* v = dynamic_cast<GInv*>(lines->getVertexB()->getGate())) {
-            qInfo() << "INV," << v->getId();
-        }else if(GInOut* v = dynamic_cast<GInOut*>(lines->getVertexB()->getGate())) {
-            qInfo() << "INOUT," << v->getVarName();
+    return "";
+}
+
+Point Diagram::getParentInfo(GGate* gate)
+{
+    if(GAnd* v = dynamic_cast<GAnd*>(gate)) {
+        return Point(v->getId(), GGate::AND);
+    }else if(GOr* v = dynamic_cast<GOr*>(gate)) {
+        return Point(v->getId(), GGate::OR);
+    }else if(GXor* v = dynamic_cast<GXor*>(gate)) {
+        return Point(v->getId(), GGate::XOR);
+    }else if(GInv* v = dynamic_cast<GInv*>(gate)) {
+        return Point(v->getId(), GGate::INV);
+    }else if(GInOut* v = dynamic_cast<GInOut*>(gate)) {
+        if(v->getIOType()) {
+            return Point(v->getVarName(), GGate::INPUT);
+        }else {
+            return Point(v->getVarName(), GGate::OUTPUT);
         }
+    }else {
+        return Point();
     }
 }
 
@@ -162,4 +169,9 @@ void Diagram::gateIsClicked(GGate *gate)
     if (m_cursor->getCursor() == GCursor::QDELETE) {
             deleteGate(gate);
     }
+}
+
+long Diagram::getId()
+{
+    return m_ids++;
 }

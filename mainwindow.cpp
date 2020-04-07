@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->listWidget->addItem("INPUT");
     ui->listWidget->addItem("OUTPUT");
     ui->listWidget->addItem("DELETE");
+    ui->listWidget->addItem("GENERATE");
 }
 
 MainWindow::~MainWindow()
@@ -40,5 +41,6 @@ void MainWindow::on_listWidget_currentRowChanged(int currentRow)
         case 5: cursor->setGateType(GGate::OUTPUT);
                 cursor->setCursorMode(GCursor::INOUT); break;
         case 6: cursor->setCursorMode(GCursor::QDELETE);  break;
+        case 7: scene->generateFunction();
     }
 }

@@ -16,6 +16,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    conections/Cable.cpp \
+    conections/Conections.cpp \
+    conections/Point.cpp \
     cursor/gcursor.cpp \
     diagram/diagram.cpp \
     diagram/gand.cpp \
@@ -29,6 +32,9 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    conections/Cable.h \
+    conections/Conections.h \
+    conections/Point.h \
     cursor/gcursor.h \
     diagram/diagram.h \
     diagram/gand.h \
