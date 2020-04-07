@@ -10,7 +10,8 @@
 #include "diagram/gcable.h"
 #include "diagram/ggate.h"
 #include "cursor/gcursor.h"
-#include "cursor/cursormode.h"
+#include "diagram/ginout.h"
+
 
 class Diagram : public QGraphicsScene
 {
@@ -22,11 +23,13 @@ private:
     QList<GGate*> m_gates;
     QList<GCable*> m_lines;
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    void addGate(Element type, int x, int y);
+    void addGate(GGate::Element type, int x, int y);
     void deleteGate(GGate* gate);
     void addCable(GVertex* a, GVertex* b);
     void deleteCable(GCable* cable);
+    void addInOut(GGate::Element type, int x, int y);
     bool isInCableList(GCable* cable);
+    void listLines();
 public slots:
     void cableIsCreated(GVertex* a, GVertex* b);
     void cableIsCliked(GCable* cable);

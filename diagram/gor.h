@@ -2,7 +2,6 @@
 #define GOR_H
 
 #include "diagram/ggate.h"
-#include "diagram/element.h"
 
 class GOr : public GGate
 {
@@ -12,6 +11,7 @@ public:
         m_id = id;
         setPixmap(QPixmap(QDir().absolutePath()+"/img/or.png"));
     }
+    int getId() { return m_id;};
 private:
     int m_id;
     Element m_element;

@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->listWidget->addItem("OR");
     ui->listWidget->addItem("XOR");
     ui->listWidget->addItem("INV");
+    ui->listWidget->addItem("INPUT");
+    ui->listWidget->addItem("OUTPUT");
     ui->listWidget->addItem("DELETE");
 }
 
@@ -27,12 +29,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_listWidget_currentRowChanged(int currentRow)
 {
-    cursor->setCursorMode(CursorMode::GATE);
+    cursor->setCursorMode(GCursor::GATE);
     switch (currentRow) {
-        case 0: cursor->setGateType(Element::AND);  break;
-        case 1: cursor->setGateType(Element::OR);   break;
-        case 2: cursor->setGateType(Element::XOR);  break;
-        case 3: cursor->setGateType(Element::INV);  break;
-        case 4: cursor->setCursorMode(CursorMode::QDELETE);  break;
+        case 0: cursor->setGateType(GGate::AND);  break;
+        case 1: cursor->setGateType(GGate::OR);   break;
+        case 2: cursor->setGateType(GGate::XOR);  break;
+        case 3: cursor->setGateType(GGate::INV);  break;
+        case 4: cursor->setGateType(GGate::INPUT);
+                cursor->setCursorMode(GCursor::INOUT); break;
+        case 5: cursor->setGateType(GGate::OUTPUT);
+                cursor->setCursorMode(GCursor::INOUT); break;
+        case 6: cursor->setCursorMode(GCursor::QDELETE);  break;
     }
 }

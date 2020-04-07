@@ -21,22 +21,20 @@ SOURCES += \
     diagram/gand.cpp \
     diagram/gcable.cpp \
     diagram/ggate.cpp \
+    diagram/ginout.cpp \
     diagram/ginv.cpp \
     diagram/gor.cpp \
     diagram/gvertex.cpp \
-    diagram/gxor.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
-    cursor/cursormode.h \
     cursor/gcursor.h \
-    diagram/GatePosition.h \
     diagram/diagram.h \
-    diagram/element.h \
     diagram/gand.h \
     diagram/gcable.h \
     diagram/ggate.h \
+    diagram/ginout.h \
     diagram/ginv.h \
     diagram/gor.h \
     diagram/gvertex.h \

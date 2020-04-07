@@ -1,7 +1,6 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 
-#include "diagram/GatePosition.h"
 #include <QGraphicsEllipseItem>
 
 class GGate;
@@ -11,6 +10,7 @@ class GVertex: public QObject, public QGraphicsEllipseItem
 {
     Q_OBJECT
 public:
+    enum Position {LEFT, RIGHT};
     GVertex(int x, int y, int w, int h, Position position, GGate* parent);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void setPosition(int x, int y);
