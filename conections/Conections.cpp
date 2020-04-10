@@ -42,13 +42,13 @@ vector<string> Conections:: getFunctions() {
   Parte de la salida y va realizando un camino hasta llegar a las entradas
   mediante un algoritmo recursivo.
 */
-string Conections:: toExpresion (const Cable &cable) const{
+string Conections::toExpresion (const Cable &cable) const{
   string expresion = "";
   expresion+="(";
   for(const Cable& x : m_cable) {
-    if (x.getB() == cable.getA() ||
-            (cable.getA().getElement() == GGate::INPUT
-             && x.getB().getElement() == GGate::OUTPUT)) {
+    if ((x.getB() == cable.getA())
+            || (x.getB().getElement() == GGate::OUTPUT
+                && cable.getA().getElement() == GGate::INPUT && (cable == x))) {
       if(x.getB().getElement() == GGate::INV) {
          expresion+="!";
       }
@@ -56,7 +56,6 @@ string Conections:: toExpresion (const Cable &cable) const{
         char input = x.getA().getPosition()+96;
         expresion+=input;
       }else {
-
         expresion+=toExpresion(x);
       }
       char enumToChar;
