@@ -46,14 +46,17 @@ string Conections:: toExpresion (const Cable &cable) const{
   string expresion = "";
   expresion+="(";
   for(const Cable& x : m_cable) {
-    if (x.getB() == cable.getA()) {
+    if (x.getB() == cable.getA() ||
+            (cable.getA().getElement() == GGate::INPUT
+             && x.getB().getElement() == GGate::OUTPUT)) {
+      if(x.getB().getElement() == GGate::INV) {
+         expresion+="!";
+      }
       if(x.getA().getElement() == GGate::INPUT) {
         char input = x.getA().getPosition()+96;
         expresion+=input;
       }else {
-        if(x.getB().getElement() == GGate::INV) {
-          expresion+="!";
-        }
+
         expresion+=toExpresion(x);
       }
       char enumToChar;
