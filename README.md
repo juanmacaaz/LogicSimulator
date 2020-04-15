@@ -1,3 +1,3 @@
 # LogicSimulator
-Proyecto de Metedologia de la programacion.  
-Univarsitat autonoma de Barcelona.
+Proyecto de Metodologia de la programacion.  
+Universitat autonoma de Barcelona.
