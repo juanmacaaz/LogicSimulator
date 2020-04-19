@@ -1,3 +1,5 @@
+# Importante
+En "release" se puede descargar el codigo compilado para probarlo (No siempre es la ultima version!!).  
 # LogicSimulator
 Proyecto de Metodologia de la programacion.  
 Universitat autonoma de Barcelona.
