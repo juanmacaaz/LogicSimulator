@@ -48,6 +48,9 @@ void Diagram::deleteGate(GGate *gate)
 {
     m_gates.removeAll(gate);
     removeItem(gate);
+    if(GInOut* v = dynamic_cast<GInOut*>(gate)) {
+        removeItem(v->getText());
+    }
     if(gate->getVertexA()!=nullptr) {
         removeItem(gate->getVertexA());
         for(GCable* cable: gate->getVertexA()->getCables()) {
@@ -66,8 +69,33 @@ void Diagram::deleteGate(GGate *gate)
 
 void Diagram::addCable(GVertex* a, GVertex* b)
 {
+    bool isValid = true;
     GCable* line = new GCable(a,b);
-    if(!isInCableList(line)) {
+    if(GInv* v = dynamic_cast<GInv*>(a->getGate())) {
+        if(a->getCables().length() > 0){
+            isValid = false;
+        }
+    }
+    if(GInv* v = dynamic_cast<GInv*>(b->getGate())) {
+        if(b->getCables().length() > 0){
+            isValid = false;
+        }
+    }
+    if(GInOut* v = dynamic_cast<GInOut*>(a->getGate())) {
+        if (!v->getIOType()){
+            if(a->getCables().length() > 0){
+                isValid = false;
+            }
+        }
+    }
+    if(GInOut* v = dynamic_cast<GInOut*>(b->getGate())) {
+        if (!v->getIOType()){
+            if(b->getCables().length() > 0){
+                isValid = false;
+            }
+        }
+    }
+    if(!isInCableList(line)&&isValid) {
         a->addCable(line);
         b->addCable(line);
         m_lines.push_back(line);
@@ -98,6 +126,10 @@ void Diagram::addInOut(GGate::Element type, int x, int y)
     }
     m_gates.push_back(newInout);
     addItem(newInout);
+    newInout->getText()->setFont(QFont("Times", 10, QFont::Bold));
+    newInout->getText()->setPlainText(QString::number(newInout->getId()));
+    newInout->getText()->setTextInteractionFlags(Qt::TextEditorInteraction);
+    addItem(newInout->getText());
     QObject::connect(newInout, SIGNAL(gateClicked(GGate*)), this, SLOT(gateIsClicked(GGate*)));
 }
 
@@ -113,17 +145,27 @@ bool Diagram::isInCableList(GCable *cable)
 
 QString Diagram::generateFunction()
 {
+    QString dialogMsg = "";
+    map<long, string> varNames;
     Conections c;
     for(GCable* lines: m_lines) {
-        Point left =  getParentInfo(lines->getVertexA()->getGate());
-        Point right = getParentInfo(lines->getVertexB()->getGate());
+        GGate* a = lines->getVertexA()->getGate();
+        GGate* b = lines->getVertexB()->getGate();
+        Point left =  getParentInfo(a);
+        if(GInOut* v = dynamic_cast<GInOut*>(a)){
+            varNames[v->getId()] = v->getText()->toPlainText().toUtf8().constData();
+        }
+        Point right = getParentInfo(b);
+        if(GInOut* v = dynamic_cast<GInOut*>(b)){
+             varNames[v->getId()] = v->getText()->toPlainText().toUtf8().constData();
+        }
         c.addCable(Cable(Point(left),Point(right)));
     }
+    c.setVarNames(varNames);
     for(string s: c.getFunctions()) {
-        qInfo() << QString::fromUtf8(s.c_str());
+        dialogMsg += QString::fromUtf8(s.c_str()) + "\n";
     }
-
-    return "";
+    return dialogMsg;
 }
 
 Point Diagram::getParentInfo(GGate* gate)
@@ -138,9 +180,9 @@ Point Diagram::getParentInfo(GGate* gate)
         return Point(v->getId(), GGate::INV);
     }else if(GInOut* v = dynamic_cast<GInOut*>(gate)) {
         if(v->getIOType()) {
-            return Point(v->getVarName(), GGate::INPUT);
+            return Point(v->getId(), GGate::INPUT);
         }else {
-            return Point(v->getVarName(), GGate::OUTPUT);
+            return Point(v->getId(), GGate::OUTPUT);
         }
     }else {
         return Point();

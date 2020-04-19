@@ -21,12 +21,9 @@ SOURCES += \
     conections/Point.cpp \
     cursor/gcursor.cpp \
     diagram/diagram.cpp \
-    diagram/gand.cpp \
     diagram/gcable.cpp \
     diagram/ggate.cpp \
     diagram/ginout.cpp \
-    diagram/ginv.cpp \
-    diagram/gor.cpp \
     diagram/gvertex.cpp \
     main.cpp \
     mainwindow.cpp

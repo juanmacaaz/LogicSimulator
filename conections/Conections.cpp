@@ -4,6 +4,8 @@
 */
 #include <string>
 #include <algorithm>
+#include <cctype>
+#include <QtDebug>
 #include "Conections.h"
 
 using namespace std;
@@ -28,7 +30,8 @@ vector<string> Conections:: getFunctions() {
   vector <string> functions;
   if(isValid(outCable)){
     for (const Cable &cable : outCable) {
-      functions.push_back(toExpresion(cable));
+      string function = m_varNames[cable.getB().getPosition()] + " = " + parseExpresion(toExpresion(cable));
+      functions.push_back(function);
     }
   }
   return functions;
@@ -53,8 +56,8 @@ string Conections::toExpresion (const Cable &cable) const{
          expresion+="!";
       }
       if(x.getA().getElement() == GGate::INPUT) {
-        char input = x.getA().getPosition()+96;
-        expresion+=input;
+        int input = x.getA().getPosition();
+        expresion+=to_string(input);
       }else {
         expresion+=toExpresion(x);
       }
@@ -78,5 +81,26 @@ void Conections::addCable(const Cable &cable) {
 }
 
 void Conections::deleteCable(const Cable &cable) {
-  m_cable.erase(std::remove(m_cable.begin(), m_cable.end(), cable), m_cable.end());
+    m_cable.erase(std::remove(m_cable.begin(), m_cable.end(), cable), m_cable.end());
+}
+
+string Conections::parseExpresion(string function)
+{
+    int index = 0;
+    string newStr = "";
+    for(char x: function){
+        if(isdigit(x)){
+            string subStr = "";
+            int subIndex = index;
+            while(isdigit(function[subIndex])){
+                subStr+=function[subIndex];
+                subIndex++;
+            }
+            newStr+=m_varNames[atoi(subStr.c_str())];
+        }else{
+            newStr+=x;
+        }
+        index++;
+    }
+    return newStr;
 }

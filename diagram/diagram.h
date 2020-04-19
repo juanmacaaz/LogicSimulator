@@ -33,7 +33,6 @@ private:
     void addInOut(GGate::Element type, int x, int y);
     Point getParentInfo(GGate* gate);
     bool isInCableList(GCable* cable);
-
 public slots:
     void cableIsCreated(GVertex* a, GVertex* b);
     void cableIsCliked(GCable* cable);

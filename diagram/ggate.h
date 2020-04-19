@@ -19,10 +19,11 @@ public:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     bool isEqual(GGate* gate);
+protected:
+    void moveVertexs(int x, int y);
 private:
     GVertex *m_vertexA;
     GVertex *m_vertexB;
-    void moveVertexs(int x, int y);
 signals:
     void gateClicked(GGate* gate);
 };

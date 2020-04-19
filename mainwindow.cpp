@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include <QMessageBox>
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -41,6 +41,8 @@ void MainWindow::on_listWidget_currentRowChanged(int currentRow)
         case 5: cursor->setGateType(GGate::OUTPUT);
                 cursor->setCursorMode(GCursor::INOUT); break;
         case 6: cursor->setCursorMode(GCursor::QDELETE);  break;
-        case 7: scene->generateFunction();
+        case 7: QMessageBox msgBox;
+                msgBox.setText(scene->generateFunction());
+                msgBox.exec();;
     }
 }
