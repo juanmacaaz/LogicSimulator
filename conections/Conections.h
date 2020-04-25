@@ -9,7 +9,7 @@ class Conections {
   private:
     map<long, string> m_varNames;
     vector <Cable> m_cable;
-    string toExpresion (const Cable &cable) const;
+    string toExpresion (const Cable &cable, int &deep) const;
   public:
     Conections() {};
     bool isValid(vector<Cable> &outCable) const;

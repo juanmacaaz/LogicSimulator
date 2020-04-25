@@ -7,11 +7,12 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    scale = 1;
     ui->setupUi(this);
     cursor = new GCursor();
     scene = new Diagram(cursor);
     ui->graphicsView->setScene(scene);
-
+    ui->graphicsView->scale(scale-0.1, scale-0.1);
     ui->listWidget->addItem("AND");
     ui->listWidget->addItem("OR");
     ui->listWidget->addItem("XOR");
@@ -41,8 +42,9 @@ void MainWindow::on_listWidget_currentRowChanged(int currentRow)
         case 5: cursor->setGateType(GGate::OUTPUT);
                 cursor->setCursorMode(GCursor::INOUT); break;
         case 6: cursor->setCursorMode(GCursor::QDELETE);  break;
-        case 7: QMessageBox msgBox;
+        case 7: {QMessageBox msgBox;
                 msgBox.setText(scene->generateFunction());
-                msgBox.exec();;
+                msgBox.exec();
+                break;}
     }
 }

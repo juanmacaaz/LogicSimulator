@@ -17,8 +17,7 @@ void Diagram::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     if(mouseEvent->button() == Qt::RightButton){
         if(m_cursor->getCursor() == GCursor::GATE){
             addGate(m_cursor->getElement(), mouseEvent->scenePos().x(), mouseEvent->scenePos().y());
-        }else
-        if(m_cursor->getCursor() == GCursor::INOUT) {
+        }else if(m_cursor->getCursor() == GCursor::INOUT) {
             addInOut(m_cursor->getElement(), mouseEvent->scenePos().x(), mouseEvent->scenePos().y());
         }
     }
@@ -63,19 +62,13 @@ void Diagram::deleteGate(GGate *gate)
             deleteCable(cable);
         }
     }
-    qInfo() << m_lines.size();
-    qInfo() << m_gates.size();
+    delete gate;
 }
 
 void Diagram::addCable(GVertex* a, GVertex* b)
 {
     bool isValid = true;
     GCable* line = new GCable(a,b);
-    if(GInv* v = dynamic_cast<GInv*>(a->getGate())) {
-        if(a->getCables().length() > 0){
-            isValid = false;
-        }
-    }
     if(GInv* v = dynamic_cast<GInv*>(b->getGate())) {
         if(b->getCables().length() > 0){
             isValid = false;
@@ -110,24 +103,28 @@ void Diagram::deleteCable(GCable* cable)
     cable->getVertexB()->removeCable(cable);
     m_lines.removeAll(cable);
     removeItem(cable);
+    delete cable;
 }
 
 void Diagram::addInOut(GGate::Element type, int x, int y)
 {
     GInOut* newInout;
+    QString varText = "";
     if(type == GGate::INPUT) {
+        varText = "in";
         newInout = new GInOut(x, y, true, getId());
         addItem(newInout->getVertexB());
         QObject::connect(newInout->getVertexB(), SIGNAL(vertexClick(GVertex*)), m_cursor, SLOT(vertexIsClick(GVertex*)));
     }else {
+        varText = "out";
         newInout = new GInOut(x, y, false, getId());
         addItem(newInout->getVertexA());
         QObject::connect(newInout->getVertexA(), SIGNAL(vertexClick(GVertex*)), m_cursor, SLOT(vertexIsClick(GVertex*)));
     }
     m_gates.push_back(newInout);
     addItem(newInout);
-    newInout->getText()->setFont(QFont("Times", 10, QFont::Bold));
-    newInout->getText()->setPlainText(QString::number(newInout->getId()));
+    newInout->getText()->setFont(QFont("Times", 11, QFont::Bold));
+    newInout->getText()->setPlainText(varText + QString::number(newInout->getId()));
     newInout->getText()->setTextInteractionFlags(Qt::TextEditorInteraction);
     addItem(newInout->getText());
     QObject::connect(newInout, SIGNAL(gateClicked(GGate*)), this, SLOT(gateIsClicked(GGate*)));

@@ -3,15 +3,15 @@
 
 GGate::GGate(int x, int y)
 {
-    setX(x);
-    setY(y);
+    setX(x-70);
+    setY(y-40);
 
     setFlag(QGraphicsPixmapItem::ItemIsMovable, true);
 
     m_vertexA = new GVertex(0, 0, 20, 20, GVertex::LEFT, this);
     m_vertexB = new GVertex(0, 0, 20, 20, GVertex::RIGHT, this);
 
-    moveVertexs(x, y);
+    moveVertexs(x-70, y-40);
 }
 
 GGate::GGate(int x, int y, bool isInput)

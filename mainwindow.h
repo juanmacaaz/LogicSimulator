@@ -28,5 +28,6 @@ private:
     Ui::MainWindow *ui;
     Diagram *scene;
     GCursor* cursor;
+    float scale;
 };
 #endif // MAINWINDOW_H

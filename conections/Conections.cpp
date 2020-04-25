@@ -30,8 +30,14 @@ vector<string> Conections:: getFunctions() {
   vector <string> functions;
   if(isValid(outCable)){
     for (const Cable &cable : outCable) {
-      string function = m_varNames[cable.getB().getPosition()] + " = " + parseExpresion(toExpresion(cable));
-      functions.push_back(function);
+        int deep = 0;
+        string function = "";
+        string varName = m_varNames[cable.getB().getPosition()];
+        function = varName + " = " + parseExpresion(toExpresion(cable, deep));
+        if (deep == 100){
+            function = "La salida " +varName + " tiene un circuito recursivo";
+        }
+        functions.push_back(function);
     }
   }
   return functions;
@@ -45,7 +51,7 @@ vector<string> Conections:: getFunctions() {
   Parte de la salida y va realizando un camino hasta llegar a las entradas
   mediante un algoritmo recursivo.
 */
-string Conections::toExpresion (const Cable &cable) const{
+string Conections::toExpresion (const Cable &cable, int &deep) const{
   string expresion = "";
   expresion+="(";
   for(const Cable& x : m_cable) {
@@ -59,7 +65,8 @@ string Conections::toExpresion (const Cable &cable) const{
         int input = x.getA().getPosition();
         expresion+=to_string(input);
       }else {
-        expresion+=toExpresion(x);
+        if (deep < 100)
+            expresion+=toExpresion(x, ++deep);
       }
       char enumToChar;
       switch(x.getB().getElement()) {

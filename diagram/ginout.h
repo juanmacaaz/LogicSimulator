@@ -18,8 +18,8 @@ public:
             m_element = GGate::OUTPUT;
             setPixmap(QPixmap(QDir().absolutePath()+"/img/output.png"));
         }
-        m_text.setX(x+70);
-        m_text.setY(y+90);
+        m_text.setX(x-5);
+        m_text.setY(y+50);
     }
     QGraphicsTextItem* getText() {return &m_text;}
     long getVarName() { return m_varName;};
