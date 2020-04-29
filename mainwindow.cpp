@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     cursor = new GCursor();
     scene = new Diagram(cursor);
     ui->graphicsView->setScene(scene);
-    ui->graphicsView->scale(scale-0.1, scale-0.1);
+    //ui->graphicsView->scale(scale-0.1, scale-0.1);
     ui->listWidget->addItem("AND");
     ui->listWidget->addItem("OR");
     ui->listWidget->addItem("XOR");

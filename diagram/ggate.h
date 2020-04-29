@@ -14,6 +14,7 @@ public:
     enum Element { XOR, AND, OR, INV , INPUT, OUTPUT};
     GGate(int x, int y);
     GGate(int x, int y, bool isInput);
+    ~GGate();
     GVertex* getVertexA() {return m_vertexA;};
     GVertex* getVertexB() {return m_vertexB;};
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

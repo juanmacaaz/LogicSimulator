@@ -6,10 +6,7 @@
 class GOr : public GGate
 {
 public:
-    GOr(int x, int y, int id):GGate(x,y) {
-        m_id = id;
-        setPixmap(QPixmap(QDir().absolutePath()+"/img/or.png"));
-    }
+    GOr(int x, int y, int id);
     long getId() { return m_id;};
 private:
     long m_id;

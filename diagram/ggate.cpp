@@ -25,6 +25,14 @@ GGate::GGate(int x, int y, bool isInput)
     moveVertexs(x, y);
 }
 
+GGate::~GGate()
+{
+    if (m_vertexA!=nullptr)
+        delete m_vertexA;
+    if (m_vertexB!=nullptr)
+        delete m_vertexB;
+}
+
 void GGate:: mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     QGraphicsItem::mouseMoveEvent(event);
     moveVertexs(x(), y());

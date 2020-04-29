@@ -8,7 +8,7 @@ class GCursor: public QObject
 {
     Q_OBJECT
 public:
-    enum CursorMode {BASIC, GATE, CABLE, QDELETE, INOUT};
+    enum CursorMode {BASIC, GATE, CABLE, QDELETE, INOUT, CHANGE};
     GCursor();
     void setCursorMode(const CursorMode &cursorMode) {m_cursorMode = cursorMode;}
     CursorMode getCursor() const {return m_cursorMode;}

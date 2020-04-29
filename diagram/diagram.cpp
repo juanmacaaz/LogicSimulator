@@ -69,23 +69,19 @@ void Diagram::addCable(GVertex* a, GVertex* b)
 {
     bool isValid = true;
     GCable* line = new GCable(a,b);
-    if(GInv* v = dynamic_cast<GInv*>(b->getGate())) {
+    if(dynamic_cast<GInv*>(b->getGate())) {
         if(b->getCables().length() > 0){
             isValid = false;
         }
     }
-    if(GInOut* v = dynamic_cast<GInOut*>(a->getGate())) {
-        if (!v->getIOType()){
-            if(a->getCables().length() > 0){
-                isValid = false;
-            }
+    if(dynamic_cast<GOut*>(a->getGate())) {
+        if(a->getCables().length() > 0){
+            isValid = false;
         }
     }
-    if(GInOut* v = dynamic_cast<GInOut*>(b->getGate())) {
-        if (!v->getIOType()){
-            if(b->getCables().length() > 0){
-                isValid = false;
-            }
+    if(dynamic_cast<GOut*>(b->getGate())) {
+        if(b->getCables().length() > 0){
+            isValid = false;
         }
     }
     if(!isInCableList(line)&&isValid) {
@@ -112,12 +108,12 @@ void Diagram::addInOut(GGate::Element type, int x, int y)
     QString varText = "";
     if(type == GGate::INPUT) {
         varText = "in";
-        newInout = new GInOut(x, y, true, getId());
+        newInout = new GIn(x, y, getId());
         addItem(newInout->getVertexB());
         QObject::connect(newInout->getVertexB(), SIGNAL(vertexClick(GVertex*)), m_cursor, SLOT(vertexIsClick(GVertex*)));
     }else {
         varText = "out";
-        newInout = new GInOut(x, y, false, getId());
+        newInout = new GOut(x, y, getId());
         addItem(newInout->getVertexA());
         QObject::connect(newInout->getVertexA(), SIGNAL(vertexClick(GVertex*)), m_cursor, SLOT(vertexIsClick(GVertex*)));
     }
@@ -175,12 +171,10 @@ Point Diagram::getParentInfo(GGate* gate)
         return Point(v->getId(), GGate::XOR);
     }else if(GInv* v = dynamic_cast<GInv*>(gate)) {
         return Point(v->getId(), GGate::INV);
-    }else if(GInOut* v = dynamic_cast<GInOut*>(gate)) {
-        if(v->getIOType()) {
-            return Point(v->getId(), GGate::INPUT);
-        }else {
-            return Point(v->getId(), GGate::OUTPUT);
-        }
+    }else if(GOut* v = dynamic_cast<GOut*>(gate)) {
+        return Point(v->getId(), GGate::OUTPUT);
+    }else if(GIn* v = dynamic_cast<GIn*>(gate)){
+        return Point(v->getId(), GGate::INPUT);
     }else {
         return Point();
     }

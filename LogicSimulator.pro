@@ -21,9 +21,14 @@ SOURCES += \
     conections/Point.cpp \
     cursor/gcursor.cpp \
     diagram/diagram.cpp \
+    diagram/gand.cpp \
     diagram/gcable.cpp \
     diagram/ggate.cpp \
+    diagram/gin.cpp \
     diagram/ginout.cpp \
+    diagram/ginv.cpp \
+    diagram/gor.cpp \
+    diagram/gout.cpp \
     diagram/gvertex.cpp \
     main.cpp \
     mainwindow.cpp
@@ -37,9 +42,11 @@ HEADERS += \
     diagram/gand.h \
     diagram/gcable.h \
     diagram/ggate.h \
+    diagram/gin.h \
     diagram/ginout.h \
     diagram/ginv.h \
     diagram/gor.h \
+    diagram/gout.h \
     diagram/gvertex.h \
     diagram/gxor.h \
     mainwindow.h

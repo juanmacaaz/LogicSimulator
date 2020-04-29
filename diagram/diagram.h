@@ -12,7 +12,8 @@
 #include "conections/Conections.h"
 #include "cursor/gcursor.h"
 #include "diagram/ginout.h"
-
+#include "diagram/gin.h"
+#include "diagram/gout.h"
 
 class Diagram : public QGraphicsScene
 {

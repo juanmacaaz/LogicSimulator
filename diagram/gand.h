@@ -6,10 +6,7 @@
 class GAnd : public GGate
 {
 public:
-    GAnd(int x, int y, int id):GGate(x,y) {
-        m_id = id;
-        setPixmap(QPixmap(QDir().absolutePath()+"/img/and.png"));
-    }
+    GAnd(int x, int y, int id);
     long getId() { return m_id;};
 private:
     long m_id;
