@@ -136,7 +136,7 @@ bool Diagram::isInCableList(GCable *cable)
     return false;
 }
 
-QString Diagram::generateFunction()
+QString Diagram::generateFunction(bool isSilumation)
 {
     QString dialogMsg = "";
     map<long, string> varNames;
@@ -145,11 +145,21 @@ QString Diagram::generateFunction()
         GGate* a = lines->getVertexA()->getGate();
         GGate* b = lines->getVertexB()->getGate();
         Point left =  getParentInfo(a);
-        if(GInOut* v = dynamic_cast<GInOut*>(a)){
-            varNames[v->getId()] = v->getText()->toPlainText().toUtf8().constData();
-        }
         Point right = getParentInfo(b);
-        if(GInOut* v = dynamic_cast<GInOut*>(b)){
+        if(!isSilumation) {
+            if(GIn* v = dynamic_cast<GIn*>(a))
+                varNames[v->getId()] = v->getText()->toPlainText().toUtf8().constData();
+            else if(GIn* v = dynamic_cast<GIn*>(b))
+               varNames[v->getId()] = v->getText()->toPlainText().toUtf8().constData();
+        }else {
+            if(GIn* v = dynamic_cast<GIn*>(a))
+                varNames[v->getId()] = v->isActive() ? "1":"0";
+            else if(GIn* v = dynamic_cast<GIn*>(b))
+               varNames[v->getId()] = v->isActive() ? "1":"0";
+        }
+        if(GOut* v = dynamic_cast<GOut*>(a)){
+            varNames[v->getId()] = v->getText()->toPlainText().toUtf8().constData();
+        } else if(GOut* v = dynamic_cast<GOut*>(b)){
              varNames[v->getId()] = v->getText()->toPlainText().toUtf8().constData();
         }
         c.addCable(Cable(Point(left),Point(right)));
@@ -201,6 +211,14 @@ void Diagram::gateIsClicked(GGate *gate)
 {
     if (m_cursor->getCursor() == GCursor::QDELETE) {
             deleteGate(gate);
+    }else if (m_cursor->getCursor() == GCursor::CHANGE){
+        if (GIn* v = dynamic_cast<GIn*>(gate)){
+            if (v->isActive()) {
+                v->disActive();
+            }else {
+                v->active();
+            }
+        }
     }
 }
 

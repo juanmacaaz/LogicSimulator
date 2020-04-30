@@ -38,7 +38,7 @@ public slots:
     void cableIsCreated(GVertex* a, GVertex* b);
     void cableIsCliked(GCable* cable);
     void gateIsClicked(GGate* gate);
-    QString generateFunction();
+    QString generateFunction(bool isSimulation);
 };
 
 #endif // DIAGRAM_H

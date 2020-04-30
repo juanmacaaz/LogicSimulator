@@ -20,7 +20,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->listWidget->addItem("INPUT");
     ui->listWidget->addItem("OUTPUT");
     ui->listWidget->addItem("DELETE");
-    ui->listWidget->addItem("GENERATE");
+    ui->listWidget->addItem("GENERATE FUNCTION");
+    ui->listWidget->addItem("GENERATE SIMULATION");
+    ui->listWidget->addItem("CHANGE");
 }
 
 MainWindow::~MainWindow()
@@ -42,9 +44,8 @@ void MainWindow::on_listWidget_currentRowChanged(int currentRow)
         case 5: cursor->setGateType(GGate::OUTPUT);
                 cursor->setCursorMode(GCursor::INOUT); break;
         case 6: cursor->setCursorMode(GCursor::QDELETE);  break;
-        case 7: {QMessageBox msgBox;
-                msgBox.setText(scene->generateFunction());
-                msgBox.exec();
-                break;}
+        case 9: cursor->setCursorMode(GCursor::CHANGE); ;break;
+        case 8: {QMessageBox msgBox;msgBox.setText(scene->generateFunction(true));msgBox.exec();break;}
+        case 7: {QMessageBox msgBox;msgBox.setText(scene->generateFunction(false));msgBox.exec();break;}
     }
 }
