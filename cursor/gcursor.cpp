@@ -7,7 +7,7 @@ GCursor::GCursor()
     m_curretnVertex = 0;
     m_vertex[0] = nullptr;
     m_vertex[1] = nullptr;
-    m_gateType = Element::OR;
+    m_gateType = GGate::OR;
     m_cursorMode = CursorMode::BASIC;
 }
 
