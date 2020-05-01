@@ -7,33 +7,13 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    scale = 1;
     ui->setupUi(this);
+    scale = 1;
     cursor = new GCursor();
+    addToolBar(new DiagramToolBar(cursor));
     scene = new Diagram(cursor);
     ui->graphicsView->setScene(scene);
-
-    /*toolBar = new QToolBar(this);
-    toolBar->setOrientation(Qt::Vertical);
-    QToolButton* q = new QToolButton();
-    q->setIcon(QIcon(QDir().absolutePath()+"/img/inputD.xpm"));
-    q->setIconSize(QSize(100,100));
-    toolBar->addWidget(q);
-    */
-   /*
-    ui->listWidget->addItem("AND");
-    ui->listWidget->addItem("OR");
-    ui->listWidget->addItem("XOR");
-    ui->listWidget->addItem("INV");
-    ui->listWidget->addItem("INPUT");
-    ui->listWidget->addItem("OUTPUT");
-    ui->listWidget->addItem("DELETE");
-    ui->listWidget->addItem("GENERATE FUNCTION");
-    ui->listWidget->addItem("GENERATE SIMULATION");
-    ui->listWidget->addItem("CHANGE");
-    */
-
-    addToolBar(new DiagramToolBar(cursor));
+    ui->graphicsView->centerOn(0,0);
 }
 
 MainWindow::~MainWindow()
@@ -57,6 +37,7 @@ void MainWindow::on_actionGenerate_simulate_triggered()
 
 void MainWindow::on_actionNew_triggered()
 {
+    ui->graphicsView->setScene(nullptr);
     delete scene;
     scene = new Diagram(cursor);
     ui->graphicsView->setScene(scene);
@@ -64,8 +45,8 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"", ".miguelgay");
-    QFile f(fileName);
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"", ".dgm");
+    QFile f(fileName+".dgm");
     f.open( QIODevice::WriteOnly);
     f.write(scene->saveDiagram().toUtf8());
     f.close();
@@ -74,4 +55,21 @@ void MainWindow::on_actionSave_triggered()
 void MainWindow::on_actionTest_Button_triggered()
 {
    qInfo() << scene->saveDiagram();
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+    QString binary;
+    QUrl fileName =  QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr("Image Files (*.dgm)"));
+    QFile file(fileName.url());
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        binary+=line;
+    }
+    delete scene;
+    scene = new Diagram(cursor);
+    ui->graphicsView->setScene(scene);
+    scene->loadDiagram(binary);
 }

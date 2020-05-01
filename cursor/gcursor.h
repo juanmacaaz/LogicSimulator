@@ -14,6 +14,7 @@ public:
     CursorMode getCursor() const {return m_cursorMode;}
     void setGateType(const GGate::Element &gateType) {m_gateType = gateType;}
     GGate::Element getElement() const {return m_gateType;}
+    void resetVertex();
 private:
     GGate::Element m_gateType;
     short int m_curretnVertex;

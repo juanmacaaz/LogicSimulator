@@ -33,9 +33,11 @@ private slots:
 
     void on_actionTest_Button_triggered();
 
+    void on_actionOpen_triggered();
+
 private:
     Ui::MainWindow *ui;
-    Diagram *scene;
+    Diagram* scene;
     GCursor* cursor;
     float scale;
 };

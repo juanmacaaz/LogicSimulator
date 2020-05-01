@@ -40,6 +40,16 @@ bool GGate::isEqual(GGate *gate)
     return (gate->getVertexA()==m_vertexA&&gate->getVertexB()==m_vertexB);
 }
 
+void GGate::disActiveVertex()
+{
+    if(m_vertexA!=nullptr) {
+        m_vertexA->unSelect();
+    }
+    if(m_vertexB!=nullptr) {
+        m_vertexB->unSelect();
+    }
+}
+
 void GGate:: moveVertexs(int x, int y) {
     if(m_vertexA != nullptr)
          m_vertexA->setPosition(x-20, y+30);

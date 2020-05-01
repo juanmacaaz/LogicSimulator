@@ -22,7 +22,7 @@ public:
     Diagram(GCursor* m_cursor);
     ~Diagram();
     QString saveDiagram();
-    void loadDiagram();
+    void loadDiagram(QString binary);
 private:
     GCursor* m_cursor;
     QList<GGate*> m_gates;
@@ -30,11 +30,11 @@ private:
     long m_ids;
     long getId();
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    void addGate(GGate::Element type, int x, int y);
+    GGate* addGate(GGate::Element type, int x, int y, long id);
     void deleteGate(GGate* gate);
     void addCable(GVertex* a, GVertex* b);
     void deleteCable(GCable* cable);
-    void addInOut(GGate::Element type, int x, int y);
+    GInOut* addInOut(GGate::Element type, int x, int y, long id, QString name);
     Point getParentInfo(GGate* gate);
     bool isInCableList(GCable* cable);
 public slots:

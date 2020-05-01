@@ -26,37 +26,45 @@ Diagram::~Diagram()
 void Diagram::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     if(mouseEvent->button() == Qt::LeftButton){
         if(m_cursor->getCursor() == GCursor::GATE){
-            addGate(m_cursor->getElement(), mouseEvent->scenePos().x(), mouseEvent->scenePos().y());
+            addGate(m_cursor->getElement(), mouseEvent->scenePos().x(), mouseEvent->scenePos().y(), getId());
         }else if(m_cursor->getCursor() == GCursor::INOUT) {
-            addInOut(m_cursor->getElement(), mouseEvent->scenePos().x(), mouseEvent->scenePos().y());
+            QString name;
+            if (m_cursor->getElement() == GGate::INPUT){
+                name = "in";
+            }else {
+                name = "out";
+            }
+            long id = getId();
+            addInOut(m_cursor->getElement(), mouseEvent->scenePos().x(), mouseEvent->scenePos().y(), id, name+QString::number(id));
         }
     }
     QGraphicsScene::mousePressEvent(mouseEvent);
 }
 
-void Diagram::addGate(GGate::Element type, int x, int y)
+GGate* Diagram::addGate(GGate::Element type, int x, int y, long id)
 {
     GGate *newGate;
     switch (type) {
-        case GGate::AND: newGate = new GAnd(x, y, getId()); break;
-        case GGate::OR:  newGate = new GOr (x, y, getId()); break;
-        case GGate::INV: newGate = new GInv(x, y, getId()); break;
-        case GGate::XOR: newGate = new GXor(x, y, getId()); break;
+        case GGate::AND: newGate = new GAnd(x, y, id); break;
+        case GGate::OR:  newGate = new GOr (x, y, id); break;
+        case GGate::INV: newGate = new GInv(x, y, id); break;
+        case GGate::XOR: newGate = new GXor(x, y, id); break;
         default: newGate = new GGate(0,0,0); break;
     }
-    m_gates.push_back(newGate);
     addItem(newGate);
     addItem(newGate->getVertexA());
     addItem(newGate->getVertexB());
+    m_gates.push_back(newGate);
     QObject::connect(newGate, SIGNAL(gateClicked(GGate*)), this, SLOT(gateIsClicked(GGate*)));
     QObject::connect(newGate->getVertexA(), SIGNAL(vertexClick(GVertex*)), m_cursor, SLOT(vertexIsClick(GVertex*)));
     QObject::connect(newGate->getVertexB(), SIGNAL(vertexClick(GVertex*)), m_cursor, SLOT(vertexIsClick(GVertex*)));
+    return newGate;
 }
 
 void Diagram::deleteGate(GGate *gate)
 {
+    delete gate;
     m_gates.removeAll(gate);
-    removeItem(gate);
     if(GInOut* v = dynamic_cast<GInOut*>(gate)) {
         removeItem(v->getText());
     }
@@ -72,7 +80,11 @@ void Diagram::deleteGate(GGate *gate)
             deleteCable(cable);
         }
     }
-    delete gate;
+
+    m_cursor->resetVertex();
+    for (GGate* gate : m_gates)
+        gate->disActiveVertex();
+    removeItem(gate);
 }
 
 void Diagram::addCable(GVertex* a, GVertex* b)
@@ -108,32 +120,30 @@ void Diagram::deleteCable(GCable* cable)
     cable->getVertexA()->removeCable(cable);
     cable->getVertexB()->removeCable(cable);
     m_lines.removeAll(cable);
-    removeItem(cable);
     delete cable;
+    removeItem(cable);
 }
 
-void Diagram::addInOut(GGate::Element type, int x, int y)
+GInOut* Diagram::addInOut(GGate::Element type, int x, int y, long id, QString name)
 {
     GInOut* newInout;
-    QString varText = "";
     if(type == GGate::INPUT) {
-        varText = "in";
-        newInout = new GIn(x, y, getId());
+        newInout = new GIn(x, y, id);
         addItem(newInout->getVertexB());
         QObject::connect(newInout->getVertexB(), SIGNAL(vertexClick(GVertex*)), m_cursor, SLOT(vertexIsClick(GVertex*)));
     }else {
-        varText = "out";
-        newInout = new GOut(x, y, getId());
+        newInout = new GOut(x, y, id);
         addItem(newInout->getVertexA());
         QObject::connect(newInout->getVertexA(), SIGNAL(vertexClick(GVertex*)), m_cursor, SLOT(vertexIsClick(GVertex*)));
     }
     m_gates.push_back(newInout);
     addItem(newInout);
     newInout->getText()->setFont(QFont("Times", 11, QFont::Bold));
-    newInout->getText()->setPlainText(varText + QString::number(newInout->getId()));
+    newInout->getText()->setPlainText(name);
     newInout->getText()->setTextInteractionFlags(Qt::TextEditorInteraction);
     addItem(newInout->getText());
     QObject::connect(newInout, SIGNAL(gateClicked(GGate*)), this, SLOT(gateIsClicked(GGate*)));
+    return newInout;
 }
 
 bool Diagram::isInCableList(GCable *cable)
@@ -230,6 +240,7 @@ void Diagram::gateIsClicked(GGate *gate)
             }
         }
     }
+    update(0,0,width(),height());
 }
 
 long Diagram::getId()
@@ -250,15 +261,42 @@ QString Diagram::saveDiagram()
         }else if(dynamic_cast<GXor*>(gate)) {
             binary += "XOR";
         }else if(GIn* v = dynamic_cast<GIn*>(gate)){
-            binary += "IN " + v->getText()->toPlainText();
+            binary += "IN " + v->getText()->toPlainText() + " " + QString::number(v->isActive());
         }else if(GOut* v = dynamic_cast<GOut*>(gate)){
             binary += "OUT " + v->getText()->toPlainText();
         }
-        binary += " " + QString::number(gate->getId()) + " " + QString::number(gate->x()) + " " + QString::number(gate->y()) + "\n";
+        binary += " " + QString::number(gate->getId()) + " " + QString::number(gate->x()+70) + " " + QString::number(gate->y()+40) + "\n";
     }
     for (GCable* cable : m_lines) {
         binary+= "CABLE " +  QString::number(cable->getVertexA()->getGate()->getId()) +
                 " " + QString::number(cable->getVertexB()->getGate()->getId()) + "\n";
     }
+    binary+=QString::number(getId());
     return binary;
+}
+
+void Diagram::loadDiagram(QString binary)
+{
+    QMap<long, GGate*> tmpGates;
+    QStringList lines = binary.split("\n");
+    for(QString line : lines) {
+        QStringList field = line.split(" ");
+        if (field[0] == "CABLE") {
+            addCable(tmpGates[field[1].toLong()]->getVertexB() ,tmpGates[field[2].toLong()]->getVertexA());
+        }else if (field[0] == "IN") {
+            tmpGates[field[3].toLong()] = addInOut(GGate::INPUT, field[4].toInt(), field[5].toInt(), field[2].toLong(), field[1]);
+        }else if (field[0] == "OUT") {
+            tmpGates[field[2].toLong()] = addInOut(GGate::OUTPUT, field[3].toInt(), field[4].toInt(), field[2].toLong(), field[1]);
+        }else if (field[0] == "AND") {
+            tmpGates[field[1].toLong()] = addGate(GGate::AND, field[2].toInt(), field[3].toInt(), field[1].toLong());
+        }else if (field[0] == "INV") {
+            tmpGates[field[1].toLong()] = addGate(GGate::INV, field[2].toInt(), field[3].toInt(), field[1].toLong());
+        }else if (field[0] == "OR") {
+            tmpGates[field[1].toLong()] = addGate(GGate::OR, field[2].toInt(), field[3].toInt(), field[1].toLong());
+        }else if (field[0] == "XOR") {
+           tmpGates[field[1].toLong()] = addGate(GGate::XOR, field[2].toInt(), field[3].toInt(), field[1].toLong());
+        }else {
+            m_ids = line.toLong();
+        }
+    }
 }

@@ -20,6 +20,7 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     bool isEqual(GGate* gate);
     long getId() const { return m_id;}
+    void disActiveVertex();
 protected:
     void moveVertexs(int x, int y);
 private:
