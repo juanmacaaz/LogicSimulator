@@ -8,6 +8,7 @@
 #include <QListWidgetItem>
 #include "diagram/diagram.h"
 #include "cursor/gcursor.h"
+#include "toolbar/diagramtoolbar.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,7 +23,12 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_listWidget_currentRowChanged(int currentRow);
+    void on_actionGenerate_function_triggered();
+    void on_actionGenerate_simulate_triggered();
+
+    void on_actionNew_triggered();
+
+    void on_actionSave_triggered();
 
 private:
     Ui::MainWindow *ui;

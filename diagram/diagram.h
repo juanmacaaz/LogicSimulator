@@ -20,6 +20,7 @@ class Diagram : public QGraphicsScene
     Q_OBJECT
 public:
     Diagram(GCursor* m_cursor);
+    ~Diagram();
 private:
     GCursor* m_cursor;
     QList<GGate*> m_gates;

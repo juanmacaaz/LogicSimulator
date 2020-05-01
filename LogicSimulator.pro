@@ -31,7 +31,9 @@ SOURCES += \
     diagram/gout.cpp \
     diagram/gvertex.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    toolbar/diagramtoolbar.cpp \
+    toolbar/dtoolbutton.cpp
 
 HEADERS += \
     conections/Cable.h \
@@ -49,7 +51,9 @@ HEADERS += \
     diagram/gout.h \
     diagram/gvertex.h \
     diagram/gxor.h \
-    mainwindow.h
+    mainwindow.h \
+    toolbar/diagramtoolbar.h \
+    toolbar/dtoolbutton.h
 
 FORMS += \
     mainwindow.ui

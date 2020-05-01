@@ -12,7 +12,15 @@ MainWindow::MainWindow(QWidget *parent)
     cursor = new GCursor();
     scene = new Diagram(cursor);
     ui->graphicsView->setScene(scene);
-    //ui->graphicsView->scale(scale-0.1, scale-0.1);
+
+    /*toolBar = new QToolBar(this);
+    toolBar->setOrientation(Qt::Vertical);
+    QToolButton* q = new QToolButton();
+    q->setIcon(QIcon(QDir().absolutePath()+"/img/inputD.xpm"));
+    q->setIconSize(QSize(100,100));
+    toolBar->addWidget(q);
+    */
+   /*
     ui->listWidget->addItem("AND");
     ui->listWidget->addItem("OR");
     ui->listWidget->addItem("XOR");
@@ -23,6 +31,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->listWidget->addItem("GENERATE FUNCTION");
     ui->listWidget->addItem("GENERATE SIMULATION");
     ui->listWidget->addItem("CHANGE");
+    */
+
+    addToolBar(new DiagramToolBar(cursor));
 }
 
 MainWindow::~MainWindow()
@@ -30,22 +41,28 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
-void MainWindow::on_listWidget_currentRowChanged(int currentRow)
+void MainWindow::on_actionGenerate_function_triggered()
 {
-    cursor->setCursorMode(GCursor::GATE);
-    switch (currentRow) {
-        case 0: cursor->setGateType(GGate::AND);  break;
-        case 1: cursor->setGateType(GGate::OR);   break;
-        case 2: cursor->setGateType(GGate::XOR);  break;
-        case 3: cursor->setGateType(GGate::INV);  break;
-        case 4: cursor->setGateType(GGate::INPUT);
-                cursor->setCursorMode(GCursor::INOUT); break;
-        case 5: cursor->setGateType(GGate::OUTPUT);
-                cursor->setCursorMode(GCursor::INOUT); break;
-        case 6: cursor->setCursorMode(GCursor::QDELETE);  break;
-        case 9: cursor->setCursorMode(GCursor::CHANGE); ;break;
-        case 8: {QMessageBox msgBox;msgBox.setText(scene->generateFunction(true));msgBox.exec();break;}
-        case 7: {QMessageBox msgBox;msgBox.setText(scene->generateFunction(false));msgBox.exec();break;}
-    }
+   QMessageBox msgBox;
+   msgBox.setText(scene->generateFunction(false));
+   msgBox.exec();
+}
+
+void MainWindow::on_actionGenerate_simulate_triggered()
+{
+    QMessageBox msgBox;
+    msgBox.setText(scene->generateFunction(true));
+    msgBox.exec();
+}
+
+void MainWindow::on_actionNew_triggered()
+{
+    delete scene;
+    scene = new Diagram(cursor);
+    ui->graphicsView->setScene(scene);
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+
 }

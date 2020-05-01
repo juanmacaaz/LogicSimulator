@@ -13,8 +13,18 @@ Diagram::Diagram(GCursor* cursor)
     QObject::connect(m_cursor, SIGNAL(cableCreated(GVertex*, GVertex*)), this, SLOT(cableIsCreated(GVertex*,GVertex*)));
 }
 
+Diagram::~Diagram()
+{
+    for (GGate* gate : m_gates){
+        delete gate;
+    }
+    for (GCable* cable : m_lines){
+        delete cable;
+    }
+}
+
 void Diagram::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
-    if(mouseEvent->button() == Qt::RightButton){
+    if(mouseEvent->button() == Qt::LeftButton){
         if(m_cursor->getCursor() == GCursor::GATE){
             addGate(m_cursor->getElement(), mouseEvent->scenePos().x(), mouseEvent->scenePos().y());
         }else if(m_cursor->getCursor() == GCursor::INOUT) {
