@@ -64,7 +64,7 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"", ".miguelgay");
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"", ".dgm");
     QFile f(fileName);
     f.open( QIODevice::WriteOnly);
     f.write(scene->saveDiagram().toUtf8());

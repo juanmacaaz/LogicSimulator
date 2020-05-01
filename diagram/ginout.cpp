@@ -1,9 +1,8 @@
 #include "ginout.h"
 #include <QDebug>
 
-GInOut::GInOut(int x, int y, long varName): GGate(x, y)
+GInOut::GInOut(int x, int y, long id): GGate(x, y, id)
 {
-    m_varName = varName;
     m_text.setX(x-5);
     m_text.setY(y+50);
 }

@@ -1,8 +1,10 @@
 #include "diagram/ggate.h"
 #include <QDebug>
 
-GGate::GGate(int x, int y)
+GGate::GGate(int x, int y, long id)
 {
+    m_id = id;
+
     setX(x-70);
     setY(y-40);
 
@@ -12,17 +14,6 @@ GGate::GGate(int x, int y)
     m_vertexB = new GVertex(0, 0, 20, 20, GVertex::RIGHT, this);
 
     moveVertexs(x-70, y-40);
-}
-
-GGate::GGate(int x, int y, bool isInput)
-{
-    if(isInput) {
-        m_vertexB = new GVertex(0, 0, 20, 20, GVertex::RIGHT, this);
-    }else {
-        m_vertexA = new GVertex(0, 0, 20, 20, GVertex::LEFT, this);
-    }
-    setFlag(QGraphicsPixmapItem::ItemIsMovable, true);
-    moveVertexs(x, y);
 }
 
 GGate::~GGate()

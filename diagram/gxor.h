@@ -6,14 +6,7 @@
 class GXor : public GGate
 {
 public:
-    GXor(int x, int y, int id):GGate(x, y) {
-        GGate(x, y);
-        m_id = id;
-        setPixmap(QPixmap(QDir().absolutePath()+"/img/xor.png"));
-    };
-    long getId() { return m_id;};
-private:
-    long m_id;
+    GXor(int x, int y, long id);
 };
 
 #endif // GXOR_H

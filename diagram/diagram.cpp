@@ -42,7 +42,7 @@ void Diagram::addGate(GGate::Element type, int x, int y)
         case GGate::OR:  newGate = new GOr (x, y, getId()); break;
         case GGate::INV: newGate = new GInv(x, y, getId()); break;
         case GGate::XOR: newGate = new GXor(x, y, getId()); break;
-        default: newGate = new GGate(0,0); break;
+        default: newGate = new GGate(0,0,0); break;
     }
     m_gates.push_back(newGate);
     addItem(newGate);
@@ -235,4 +235,30 @@ void Diagram::gateIsClicked(GGate *gate)
 long Diagram::getId()
 {
     return m_ids++;
+}
+
+QString Diagram::saveDiagram()
+{
+    QString binary;
+    for (GGate* gate: m_gates){
+        if (dynamic_cast<GAnd*>(gate)){
+            binary += "AND";
+        }else if(dynamic_cast<GOr*>(gate)) {
+            binary += "OR";
+        }else if(dynamic_cast<GInv*>(gate)) {
+            binary += "INV";
+        }else if(dynamic_cast<GXor*>(gate)) {
+            binary += "XOR";
+        }else if(GIn* v = dynamic_cast<GIn*>(gate)){
+            binary += "IN " + v->getText()->toPlainText();
+        }else if(GOut* v = dynamic_cast<GOut*>(gate)){
+            binary += "OUT " + v->getText()->toPlainText();
+        }
+        binary += " " + QString::number(gate->getId()) + " " + QString::number(gate->x()) + " " + QString::number(gate->y()) + "\n";
+    }
+    for (GCable* cable : m_lines) {
+        binary+= "CABLE " +  QString::number(cable->getVertexA()->getGate()->getId()) +
+                " " + QString::number(cable->getVertexB()->getGate()->getId()) + "\n";
+    }
+    return binary;
 }

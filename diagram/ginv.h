@@ -6,10 +6,7 @@
 class GInv : public GGate
 {
 public:
-    GInv(int x, int y, int id);
-    long getId() { return m_id;};
-private:
-    long m_id;
+    GInv(int x, int y, long id);
 };
 
 #endif // GINV_H

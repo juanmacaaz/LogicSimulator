@@ -30,6 +30,7 @@ SOURCES += \
     diagram/gor.cpp \
     diagram/gout.cpp \
     diagram/gvertex.cpp \
+    diagram/gxor.cpp \
     main.cpp \
     mainwindow.cpp \
     toolbar/diagramtoolbar.cpp \

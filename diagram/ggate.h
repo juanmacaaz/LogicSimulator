@@ -12,19 +12,20 @@ class GGate : public QObject, public QGraphicsPixmapItem
     Q_OBJECT
 public:
     enum Element { XOR, AND, OR, INV , INPUT, OUTPUT};
-    GGate(int x, int y);
-    GGate(int x, int y, bool isInput);
+    GGate(int x, int y, long id);
     ~GGate();
     GVertex* getVertexA() {return m_vertexA;};
     GVertex* getVertexB() {return m_vertexB;};
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     bool isEqual(GGate* gate);
+    long getId() const { return m_id;}
 protected:
     void moveVertexs(int x, int y);
 private:
     GVertex *m_vertexA;
     GVertex *m_vertexB;
+    long m_id;
 signals:
     void gateClicked(GGate* gate);
 };

@@ -6,10 +6,7 @@
 class GOr : public GGate
 {
 public:
-    GOr(int x, int y, int id);
-    long getId() { return m_id;};
-private:
-    long m_id;
+    GOr(int x, int y, long id);
 };
 
 #endif // GOR_H

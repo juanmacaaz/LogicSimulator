@@ -6,6 +6,7 @@
 #include <QtGui>
 #include <QGraphicsScene>
 #include <QListWidgetItem>
+#include <QFileDialog>
 #include "diagram/diagram.h"
 #include "cursor/gcursor.h"
 #include "toolbar/diagramtoolbar.h"
@@ -29,6 +30,8 @@ private slots:
     void on_actionNew_triggered();
 
     void on_actionSave_triggered();
+
+    void on_actionTest_Button_triggered();
 
 private:
     Ui::MainWindow *ui;

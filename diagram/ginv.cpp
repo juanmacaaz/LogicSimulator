@@ -1,6 +1,5 @@
 #include "ginv.h"
 
-GInv::GInv(int x, int y, int id):GGate(x, y){
-    m_id = id;
+GInv::GInv(int x, int y, long id):GGate(x, y, id){
     setPixmap(QPixmap(QDir().absolutePath()+"/img/inv.png"));
 };

@@ -21,6 +21,8 @@ class Diagram : public QGraphicsScene
 public:
     Diagram(GCursor* m_cursor);
     ~Diagram();
+    QString saveDiagram();
+    void loadDiagram();
 private:
     GCursor* m_cursor;
     QList<GGate*> m_gates;

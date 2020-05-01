@@ -48,6 +48,7 @@
     <property name="title">
      <string>About</string>
     </property>
+    <addaction name="actionTest_Button"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuFunctions"/>
@@ -77,6 +78,11 @@
   <action name="actionGenerate_simulate">
    <property name="text">
     <string>Generate simulate</string>
+   </property>
+  </action>
+  <action name="actionTest_Button">
+   <property name="text">
+    <string>Test Button</string>
    </property>
   </action>
  </widget>
