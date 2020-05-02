@@ -45,8 +45,8 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"", ".dgm");
-    QFile f(fileName+".dgm");
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"", tr("Diagram Files (*.dgm)"));
+    QFile f(fileName);
     f.open( QIODevice::WriteOnly);
     f.write(scene->saveDiagram().toUtf8());
     f.close();
@@ -60,7 +60,7 @@ void MainWindow::on_actionTest_Button_triggered()
 void MainWindow::on_actionOpen_triggered()
 {
     QString binary;
-    QUrl fileName =  QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr("Image Files (*.dgm)"));
+    QUrl fileName =  QFileDialog::getOpenFileName(this, tr("Open Diagram"), "", tr("Diagram Files (*.dgm)"));
     QFile file(fileName.url());
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
@@ -72,4 +72,12 @@ void MainWindow::on_actionOpen_triggered()
     scene = new Diagram(cursor);
     ui->graphicsView->setScene(scene);
     scene->loadDiagram(binary);
+}
+
+void MainWindow::on_actionHelp_triggered()
+{
+    QMessageBox msgBox;
+    msgBox.setText("Ver. LogicSimulator 0.0.4\n"
+                   "https://github.com/juanmacaaz/LogicSimulator");
+    msgBox.exec();
 }

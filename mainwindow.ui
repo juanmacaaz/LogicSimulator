@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>LogicSimulator</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -59,9 +59,9 @@
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
-     <string>About</string>
+     <string>Help</string>
     </property>
-    <addaction name="actionTest_Button"/>
+    <addaction name="actionHelp"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuFunctions"/>
@@ -75,12 +75,12 @@
   </action>
   <action name="actionOpen">
    <property name="text">
-    <string>Open</string>
+    <string>Open proyect</string>
    </property>
   </action>
   <action name="actionSave">
    <property name="text">
-    <string>Save</string>
+    <string>Save as...</string>
    </property>
   </action>
   <action name="actionGenerate_function">
@@ -93,9 +93,9 @@
     <string>Generate simulate</string>
    </property>
   </action>
-  <action name="actionTest_Button">
+  <action name="actionHelp">
    <property name="text">
-    <string>Test Button</string>
+    <string>About...</string>
    </property>
   </action>
  </widget>

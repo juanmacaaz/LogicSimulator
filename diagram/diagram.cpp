@@ -63,7 +63,6 @@ GGate* Diagram::addGate(GGate::Element type, int x, int y, long id)
 
 void Diagram::deleteGate(GGate *gate)
 {
-    delete gate;
     m_gates.removeAll(gate);
     if(GInOut* v = dynamic_cast<GInOut*>(gate)) {
         removeItem(v->getText());
@@ -85,6 +84,7 @@ void Diagram::deleteGate(GGate *gate)
     for (GGate* gate : m_gates)
         gate->disActiveVertex();
     removeItem(gate);
+    delete gate;
 }
 
 void Diagram::addCable(GVertex* a, GVertex* b)
@@ -117,11 +117,11 @@ void Diagram::addCable(GVertex* a, GVertex* b)
 
 void Diagram::deleteCable(GCable* cable)
 {
+    removeItem(cable);
     cable->getVertexA()->removeCable(cable);
     cable->getVertexB()->removeCable(cable);
     m_lines.removeAll(cable);
     delete cable;
-    removeItem(cable);
 }
 
 GInOut* Diagram::addInOut(GGate::Element type, int x, int y, long id, QString name)

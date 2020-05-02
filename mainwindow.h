@@ -35,6 +35,8 @@ private slots:
 
     void on_actionOpen_triggered();
 
+    void on_actionHelp_triggered();
+
 private:
     Ui::MainWindow *ui;
     Diagram* scene;

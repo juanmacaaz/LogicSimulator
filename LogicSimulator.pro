@@ -29,6 +29,7 @@ SOURCES += \
     diagram/ginv.cpp \
     diagram/gor.cpp \
     diagram/gout.cpp \
+    diagram/gtext.cpp \
     diagram/gvertex.cpp \
     diagram/gxor.cpp \
     main.cpp \
@@ -50,6 +51,7 @@ HEADERS += \
     diagram/ginv.h \
     diagram/gor.h \
     diagram/gout.h \
+    diagram/gtext.h \
     diagram/gvertex.h \
     diagram/gxor.h \
     mainwindow.h \
