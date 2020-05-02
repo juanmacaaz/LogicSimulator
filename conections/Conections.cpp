@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cctype>
 #include "Conections.h"
+#include <QDebug>
 
 using namespace std;
 
@@ -32,6 +33,7 @@ vector<string> Conections:: getFunctions() {
         int deep = 0;
         string function = "";
         string varName = m_varNames[cable.getB().getPosition()];
+        qInfo() << toExpresion(cable, deep).c_str();
         function = varName + " = " + parseExpresion(toExpresion(cable, deep));
         if (deep == 100){
             function = "La salida " +varName + " tiene un circuito recursivo";
@@ -98,18 +100,16 @@ string Conections::parseExpresion(string function)
     while (function[i]!='\0') {
         if(isdigit(function[i])){
             string subStr = "";
-            int subIndex = index;
-            while(isdigit(function[subIndex])){
-                subStr+=function[subIndex];
-                subIndex++;
+            while(isdigit(function[i])){
+                subStr+=function[i];
+                i++;
             }
             newStr+=m_varNames[atoi(subStr.c_str())];
-            i = subIndex-1;
         }else{
             newStr+=function[i];
+            i++;
         }
         index++;
-        i++;
     }
     return newStr;
 }
