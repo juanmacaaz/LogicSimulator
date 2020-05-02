@@ -5,7 +5,6 @@
 #include <string>
 #include <algorithm>
 #include <cctype>
-#include <QtDebug>
 #include "Conections.h"
 
 using namespace std;
@@ -95,8 +94,9 @@ string Conections::parseExpresion(string function)
 {
     int index = 0;
     string newStr = "";
-    for(char x: function){
-        if(isdigit(x)){
+    int i = 0;
+    while (function[i]!='\0') {
+        if(isdigit(function[i])){
             string subStr = "";
             int subIndex = index;
             while(isdigit(function[subIndex])){
@@ -104,10 +104,12 @@ string Conections::parseExpresion(string function)
                 subIndex++;
             }
             newStr+=m_varNames[atoi(subStr.c_str())];
+            i = subIndex-1;
         }else{
-            newStr+=x;
+            newStr+=function[i];
         }
         index++;
+        i++;
     }
     return newStr;
 }

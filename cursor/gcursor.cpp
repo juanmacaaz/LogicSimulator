@@ -1,5 +1,4 @@
 #include "cursor/gcursor.h"
-#include <QDebug>
 
 GCursor::GCursor()
 {
@@ -19,7 +18,6 @@ void GCursor::resetVertex()
 
 void GCursor::vertexIsClick(GVertex *vertex)
 {
-    qInfo() << "Cuidado!";
     m_vertex[m_curretnVertex] = vertex;
      if (m_vertex[0] != nullptr){
          if(m_curretnVertex == 0){

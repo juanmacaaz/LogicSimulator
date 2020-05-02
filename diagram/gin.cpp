@@ -1,5 +1,4 @@
 #include "gin.h"
-#include <QDebug>
 
 GIn::GIn(int x,int y, long id):GInOut(x, y, id) {
     setPixmap(QPixmap(QDir().absolutePath()+"/img/inputD.png"));

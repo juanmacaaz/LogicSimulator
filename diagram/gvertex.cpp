@@ -1,6 +1,5 @@
 #include "diagram/gvertex.h"
 #include "QWidget"
-#include <QDebug>
 
 GVertex::GVertex(int x, int y, int w, int h, Position position, GGate* parent)
 {

@@ -1,5 +1,4 @@
 #include "diagram/diagram.h"
-#include "QDebug"
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
 
@@ -28,13 +27,13 @@ void Diagram::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
         if(m_cursor->getCursor() == GCursor::GATE){
             addGate(m_cursor->getElement(), mouseEvent->scenePos().x(), mouseEvent->scenePos().y(), getId());
         }else if(m_cursor->getCursor() == GCursor::INOUT) {
+            long id = getId();
             QString name;
             if (m_cursor->getElement() == GGate::INPUT){
                 name = "in";
             }else {
                 name = "out";
             }
-            long id = getId();
             addInOut(m_cursor->getElement(), mouseEvent->scenePos().x(), mouseEvent->scenePos().y(), id, name+QString::number(id));
         }
     }
@@ -217,7 +216,6 @@ void Diagram::cableIsCreated(GVertex* a, GVertex* b)
     }else {
         addCable(b, a);
     }
-    qInfo() << m_lines.size();
 }
 
 void Diagram::cableIsCliked(GCable *cable)
@@ -284,7 +282,7 @@ void Diagram::loadDiagram(QString binary)
         if (field[0] == "CABLE") {
             addCable(tmpGates[field[1].toLong()]->getVertexB() ,tmpGates[field[2].toLong()]->getVertexA());
         }else if (field[0] == "IN") {
-            tmpGates[field[3].toLong()] = addInOut(GGate::INPUT, field[4].toInt(), field[5].toInt(), field[2].toLong(), field[1]);
+            tmpGates[field[3].toLong()] = addInOut(GGate::INPUT, field[4].toInt(), field[5].toInt(), field[3].toLong(), field[1]);
         }else if (field[0] == "OUT") {
             tmpGates[field[2].toLong()] = addInOut(GGate::OUTPUT, field[3].toInt(), field[4].toInt(), field[2].toLong(), field[1]);
         }else if (field[0] == "AND") {

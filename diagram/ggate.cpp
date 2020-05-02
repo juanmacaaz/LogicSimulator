@@ -1,5 +1,4 @@
 #include "diagram/ggate.h"
-#include <QDebug>
 
 GGate::GGate(int x, int y, long id)
 {
@@ -31,8 +30,8 @@ void GGate:: mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 
 void GGate::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    emit gateClicked(this);
     QGraphicsItem::mousePressEvent(event);
+    emit gateClicked(this);
 }
 
 bool GGate::isEqual(GGate *gate)

@@ -1,5 +1,4 @@
 #include "ginout.h"
-#include <QDebug>
 
 GInOut::GInOut(int x, int y, long id): GGate(x, y, id)
 {
