@@ -1,5 +1,4 @@
 #include "diagram/gcable.h"
-#include <QtDebug>
 
 GCable::GCable(GVertex* a, GVertex* b)
 {

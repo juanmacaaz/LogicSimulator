@@ -5,21 +5,28 @@
 #include "diagram/gvertex.h"
 #include <QGraphicsPixmapItem>
 #include <QDir>
+#include <typeinfo>
 
 class GGate : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:
-    GGate(int x, int y);
+    enum Element { XOR, AND, OR, INV , INPUT, OUTPUT};
+    GGate(int x, int y, long id);
+    ~GGate();
     GVertex* getVertexA() {return m_vertexA;};
     GVertex* getVertexB() {return m_vertexB;};
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     bool isEqual(GGate* gate);
+    long getId() const { return m_id;}
+    void disActiveVertex();
+protected:
+    void moveVertexs(int x, int y);
 private:
     GVertex *m_vertexA;
     GVertex *m_vertexB;
-    void moveVertexs(int x, int y);
+    long m_id;
 signals:
     void gateClicked(GGate* gate);
 };
