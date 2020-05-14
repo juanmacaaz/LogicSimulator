@@ -5,7 +5,11 @@
 #include <iostream>
 using namespace std;
 
+<<<<<<< HEAD
 class Implicant
+=======
+/*class Implicant
+>>>>>>> parser
 {
 public:
 	enum BitState
@@ -16,14 +20,26 @@ public:
 	};
 
 	Implicant(int value, int nBits);
+<<<<<<< HEAD
 	vector<Implicant::BitState> getBits() const;
 	int nOnes();
 	vector<Implicant::BitState> operator^(Implicant imp);
+=======
+	Implicant(vector<Implicant::BitState> bits, int nBits) : m_bits(bits), m_nBits(nBits) {};
+	vector<Implicant::BitState> getBits() const;
+	int nOnes() const;
+	vector<Implicant::BitState> operator^(Implicant imp);
+	Implicant operator+(Implicant imp);
+>>>>>>> parser
 	
 private:
 	vector<Implicant::BitState> m_bits;
 	unsigned int m_nBits;
+<<<<<<< HEAD
 };
+=======
+};*/
+>>>>>>> parser
 
 class Operation
 {
@@ -84,4 +100,8 @@ bool validInput(string expression, string* msg);
 
 void quitSpaces(string* str);
 
+<<<<<<< HEAD
 string mcCluskey(vector<int> minterms, vector<string> names);
+=======
+string mcCluskey(vector<int> minterms, vector<string> names);
+>>>>>>> parser
