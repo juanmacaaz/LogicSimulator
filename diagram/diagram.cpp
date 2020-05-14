@@ -78,7 +78,6 @@ void Diagram::deleteGate(GGate *gate)
             deleteCable(cable);
         }
     }
-
     m_cursor->resetVertex();
     for (GGate* gate : m_gates)
         gate->disActiveVertex();
