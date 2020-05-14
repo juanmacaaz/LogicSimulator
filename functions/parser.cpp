@@ -1,27 +1,15 @@
 #include "parser.h"
 
-<<<<<<< HEAD
-Implicant::Implicant(int value, int nBits)
-{
-	int res;
-	m_nBits = nBits;
-	for (unsigned int i = 0; i < nBits; i++)
-=======
 /*Implicant::Implicant(int value, int nBits)
 {
 	int res;
 	m_nBits = nBits;
 	for (int i = 0; i < nBits; i++)
->>>>>>> parser
+
 	{
 		res = value % 2;
 		value /= 2;
-
-<<<<<<< HEAD
-		if (value == 0)
-=======
 		if (res == 0)
->>>>>>> parser
 			m_bits.push_back(Implicant::ZERO);
 		else
 			m_bits.push_back(Implicant::ONE);
@@ -33,11 +21,8 @@ vector<Implicant::BitState> Implicant::getBits() const
 	return m_bits;
 }
 
-<<<<<<< HEAD
-int Implicant::nOnes()
-=======
+
 int Implicant::nOnes() const
->>>>>>> parser
 {
 	int counter = 0;
 	for (Implicant::BitState bit : m_bits)
@@ -55,10 +40,7 @@ vector<Implicant::BitState> Implicant::operator^(Implicant imp)
 			ret.push_back(Implicant::ONE);
 		else
 			ret.push_back(Implicant::ZERO);
-<<<<<<< HEAD
-}
-
-=======
+	}
 
 	return ret;
 }
@@ -72,12 +54,13 @@ Implicant Implicant::operator+(Implicant imp)
 			ret.push_back(Implicant::ONE);
 		else
 			ret.push_back(Implicant::ZERO);
+	}
 
 	Implicant result(ret, m_nBits);
 	return result;
 }*/
 
->>>>>>> parser
+
 //Estas funciones permiten que las expresiones se evaluen recursivamente ejecutando la operacion
 //necesaria en cada caso. El caso limite es la clase "Var", donde simplemente devuelve el valor
 //de esa variable mirandola en un diccionario que recive como parametro.
@@ -267,14 +250,7 @@ void quitSpaces(string* str)
 		if ((*str)[i] == ' ')
 			str->replace(i, 1, "");
 }
-<<<<<<< HEAD
 
-//Reduccion por el metodo de Quine-McCluskey
-/*string mcCluskey(vector<int> minterms, int nVars, vector<string> names)
-{
-	
-}*/
-=======
 /*
 //Reduccion por el metodo de Quine-McCluskey
 string mcCluskey(vector<int> minterms, int nVars, vector<string> names)
@@ -282,4 +258,4 @@ string mcCluskey(vector<int> minterms, int nVars, vector<string> names)
 	vector<Implicant> primes;
 	Implicant matrix[100][100];
 }*/
->>>>>>> parser
+
