@@ -25,6 +25,7 @@ SOURCES += \
     diagram/gor.cpp \
     diagram/gvertex.cpp \
     diagram/gxor.cpp \
+    functions/parser.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -41,6 +42,7 @@ HEADERS += \
     diagram/gor.h \
     diagram/gvertex.h \
     diagram/gxor.h \
+    functions/parser.h \
     mainwindow.h
 
 FORMS += \

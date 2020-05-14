@@ -1,15 +1,15 @@
 #include "parser.h"
 
-Implicant::Implicant(int value, int nBits)
+/*Implicant::Implicant(int value, int nBits)
 {
 	int res;
 	m_nBits = nBits;
-	for (unsigned int i = 0; i < nBits; i++)
+	for (int i = 0; i < nBits; i++)
 	{
 		res = value % 2;
 		value /= 2;
 
-		if (value == 0)
+		if (res == 0)
 			m_bits.push_back(Implicant::ZERO);
 		else
 			m_bits.push_back(Implicant::ONE);
@@ -21,7 +21,7 @@ vector<Implicant::BitState> Implicant::getBits() const
 	return m_bits;
 }
 
-int Implicant::nOnes()
+int Implicant::nOnes() const
 {
 	int counter = 0;
 	for (Implicant::BitState bit : m_bits)
@@ -39,7 +39,23 @@ vector<Implicant::BitState> Implicant::operator^(Implicant imp)
 			ret.push_back(Implicant::ONE);
 		else
 			ret.push_back(Implicant::ZERO);
+
+	return ret;
 }
+
+Implicant Implicant::operator+(Implicant imp)
+{
+	vector<Implicant::BitState> bits = imp.getBits();
+	vector<Implicant::BitState> ret;
+	for (unsigned int i = 0; i < m_nBits; i++)
+		if (m_bits[i] == bits[i])
+			ret.push_back(Implicant::ONE);
+		else
+			ret.push_back(Implicant::ZERO);
+
+	Implicant result(ret, m_nBits);
+	return result;
+}*/
 
 //Estas funciones permiten que las expresiones se evaluen recursivamente ejecutando la operacion
 //necesaria en cada caso. El caso limite es la clase "Var", donde simplemente devuelve el valor
@@ -230,9 +246,10 @@ void quitSpaces(string* str)
 		if ((*str)[i] == ' ')
 			str->replace(i, 1, "");
 }
-
+/*
 //Reduccion por el metodo de Quine-McCluskey
-/*string mcCluskey(vector<int> minterms, int nVars, vector<string> names)
+string mcCluskey(vector<int> minterms, int nVars, vector<string> names)
 {
-	
+	vector<Implicant> primes;
+	Implicant matrix[100][100];
 }*/

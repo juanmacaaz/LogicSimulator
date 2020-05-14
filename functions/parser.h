@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 
-class Implicant
+/*class Implicant
 {
 public:
 	enum BitState
@@ -16,14 +16,16 @@ public:
 	};
 
 	Implicant(int value, int nBits);
+	Implicant(vector<Implicant::BitState> bits, int nBits) : m_bits(bits), m_nBits(nBits) {};
 	vector<Implicant::BitState> getBits() const;
-	int nOnes();
+	int nOnes() const;
 	vector<Implicant::BitState> operator^(Implicant imp);
+	Implicant operator+(Implicant imp);
 	
 private:
 	vector<Implicant::BitState> m_bits;
 	unsigned int m_nBits;
-};
+};*/
 
 class Operation
 {
