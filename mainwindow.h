@@ -7,9 +7,16 @@
 #include <QGraphicsScene>
 #include <QListWidgetItem>
 #include <QFileDialog>
+#include <QTableWidget>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QLineEdit>
+#include <sstream>
+#include <algorithm>
 #include "diagram/diagram.h"
 #include "cursor/gcursor.h"
 #include "toolbar/diagramtoolbar.h"
+#include "functions/parser.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -37,10 +44,19 @@ private slots:
 
     void on_actionHelp_triggered();
 
+    void on_btn_click();
+
 private:
+
     Ui::MainWindow *ui;
     Diagram* scene;
     GCursor* cursor;
+    QVBoxLayout* vertical;
+    QPushButton* btn;
+    QTableWidget* table;
+    QLineEdit* input;
+    QLineEdit* mimterms;
+    QLineEdit* reduction;
     float scale;
 };
 #endif // MAINWINDOW_H

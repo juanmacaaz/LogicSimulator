@@ -89,6 +89,34 @@ bool Var::eval(const unordered_map<string,bool> &dict) const
     return dict.at(m_name);
 }
 
+//Esta funcion obtiene el numero de variables y sus nombres de forma recursiva
+void Operation::getInfo(int* nVars, vector<string>* names) const
+{
+	m_left->getInfo(nVars, names);
+	m_right->getInfo(nVars, names);
+}
+
+void Not::getInfo(int* nVars, vector<string>* names) const
+{
+    m_left->getInfo(nVars, names);
+}
+
+void Var::getInfo(int* nVars, vector<string>* names) const
+{
+	bool eq = false;
+
+    for (string name : *names)
+        if (name == m_name)
+            eq = true;
+
+	if (!eq)
+	{
+		(*nVars)++;
+		names->push_back(m_name);
+	}
+}
+
+
 //Esta funcion toma como argumento una string con una expresion logica y la parsea a un arbol 
 //de objetos "Operation" de forma recursiva.
 Operation* parse(string expression, vector<string>* parenthesis)

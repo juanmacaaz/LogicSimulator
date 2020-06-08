@@ -38,6 +38,7 @@ protected:
 public:
     Operation(Operation* left, Operation* right) : m_left(left), m_right(right) {};
     virtual bool eval(const unordered_map<string,bool> &dict) const = 0;
+	virtual void getInfo(int* nVars, vector<string>* names) const;
 };
 
 class And : public Operation
@@ -66,6 +67,7 @@ class Not : public Operation
 public:
     Not(Operation* left) : Operation(left, nullptr) {};
     bool eval(const unordered_map<string,bool> &dict) const;
+    void getInfo(int* nVars, vector<string>* names) const;
 };
 
 class Var : public Operation
@@ -75,6 +77,7 @@ protected:
 public:
     Var(string name) : Operation(nullptr, nullptr), m_name(name) {};
     bool eval(const unordered_map<string,bool> &dict) const;
+	void getInfo(int* nVars, vector<string>* names) const;
 };
 
 Operation* parse(string expression, vector<string>* parenthesis = new vector<string>());
@@ -89,4 +92,4 @@ bool validInput(string expression, string* msg);
 
 void quitSpaces(string* str);
 
-string mcCluskey(vector<int> minterms, vector<string> names);
+//string mcCluskey(vector<int> minterms, vector<string> names);

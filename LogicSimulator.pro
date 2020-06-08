@@ -55,14 +55,10 @@ HEADERS += \
     diagram/gtext.h \
     diagram/gvertex.h \
     diagram/gxor.h \
-<<<<<<< HEAD
     functions/parser.h \
-    mainwindow.h
-=======
     mainwindow.h \
     toolbar/diagramtoolbar.h \
     toolbar/dtoolbutton.h
->>>>>>> 21affad6fae67df999bf56d9b335c709f9613120
 
 FORMS += \
     mainwindow.ui
@@ -73,7 +69,18 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    .gitignore.txt \
+    LICENSE \
+    README.md \
+    examples/ejemplo1.jpg \
+    examples/nuevoDisenyo.png \
     img/and.png \
+    img/circle.png \
+    img/cursor.png \
+    img/delete.png \
+    img/inputD.png \
+    img/inputE.png \
     img/inv.png \
     img/or.png \
+    img/output.png \
     img/xor.png
