@@ -11,6 +11,7 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QInputDialog>
 #include <sstream>
 #include <algorithm>
 #include "diagram/diagram.h"

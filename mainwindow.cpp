@@ -50,7 +50,28 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionGenerate_function_triggered()
 {
-    input->setText(scene->generateFunction(false));
+    QStringList list;
+    QStringList functions;
+    QStringList outputs;
+
+    for(QString& t : scene->generateFunction(false).split("\n"))
+        list << t;
+
+    if (list.size() <= 2)
+    {
+        input->setText(list[0].split("=")[1]);
+    }
+    else
+    {
+        list.removeLast();
+        for(QString& t : list )
+        {
+            functions << t.split("=")[1];
+            outputs   << t.split("=")[0];
+        }
+        QString text = QInputDialog::getItem(this, tr("Multiple outputs"), tr("Choise a output"), outputs);
+        input->setText(functions[outputs.indexOf(text)]);
+    }
     on_btn_click();
 }
 
@@ -113,21 +134,24 @@ void MainWindow::on_btn_click()
     string function = input->text().toStdString();
     string erroMsg;
 
-    if(validInput(function, &erroMsg)) {
+    if(validInput(function, &erroMsg))
+    {
         quitSpaces(&function);
         operation = parse(function);
         operation->getInfo(&nVars, &names);
         truthTable = getTable(operation, nVars, names);
         minterms = getMinterms(truthTable, nVars);
 
-        for(int& x: minterms) {
+        for(int& x: minterms)
+        {
             mintermsS.append(QString::number(x));
             mintermsS.append(" ");
         }
         mimterms->setText(mintermsS);
 
         //Tabla
-        for(string& x: names) {
+        for(string& x: names)
+        {
             headerNames << x.c_str();
         }
         headerNames << "out=";
@@ -137,22 +161,27 @@ void MainWindow::on_btn_click()
 
         table->setHorizontalHeaderLabels(headerNames);
 
-        for(int i = 0; i < pow(2,nVars); i++) {
+        for(int i = 0; i < pow(2,nVars); i++)
+        {
             table->setItem(i, nVars, new QTableWidgetItem(to_string(truthTable[i]).c_str()));
         }
 
-        for(int i = 0; i < nVars; i++) {
+        for(int i = 0; i < nVars; i++)
+        {
             bool state = true;
-            for(int j = 0; j < pow(2,nVars); j++) {
-                if(((j%(int)pow(2, i))==0)) {
+            for(int j = 0; j < pow(2,nVars); j++)
+            {
+                if(((j%(int)pow(2, i))==0))
                     state = !state;
-                }
+
                 table->setItem(j, nVars-i-1, new QTableWidgetItem(to_string(state).c_str()));
             }
         }
 
         table->show();
-    }else{
+    }
+    else
+    {
         QMessageBox messageBox;
         messageBox.critical(0,"Error", QString(erroMsg.c_str()));
         messageBox.setFixedSize(500,200);

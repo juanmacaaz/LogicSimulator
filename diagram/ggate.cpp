@@ -36,7 +36,7 @@ void GGate::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 bool GGate::isEqual(GGate *gate)
 {
-    return (gate->getVertexA()==m_vertexA&&gate->getVertexB()==m_vertexB);
+    return (gate->getVertexA()==m_vertexA && gate->getVertexB()==m_vertexB);
 }
 
 void GGate::disActiveVertex()

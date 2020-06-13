@@ -34,7 +34,7 @@ vector<string> Conections:: getFunctions() {
         string function = "";
         string varName = m_varNames[cable.getB().getPosition()];
         qInfo() << toExpresion(cable, deep).c_str();
-        function = /*varName + " = " + */parseExpresion(toExpresion(cable, deep));
+        function = varName + " = " + parseExpresion(toExpresion(cable, deep));
         if (deep == 100){
             function = "La salida " +varName + " tiene un circuito recursivo";
         }

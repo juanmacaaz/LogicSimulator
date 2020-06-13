@@ -140,6 +140,7 @@ Operation* parse(string expression, vector<string>* parenthesis)
 					{
 						parenthesis->push_back(expression.substr(position + 1, i - position - 1));
 						expression.replace(position, i - position + 1, to_string(parenthesis->size()-1));
+                        break;
 					}
 					else
 						counter--;
@@ -190,6 +191,7 @@ vector<bool> getTable(Operation* function, int nVars,  vector<string> names)
 {
 	vector<bool> table;
     unordered_map<string,bool> dict;
+
     for (string name : names)
     {
         dict.emplace(name, true);
@@ -209,6 +211,7 @@ vector<bool> getTable(Operation* function, int nVars,  vector<string> names)
 vector<int> getMinterms(vector<bool> table, int nVars)
 {
     vector<int> minterms;
+
     for (int i = 0; i < pow(2, nVars); i++)
     {
         if (table[i])
@@ -254,11 +257,11 @@ bool validInput(string expression, string* msg)
 		else if (expression[i] == ')')
 			parenthesis--;
 
-		if ((expression[i] <= 90 && expression[i] >= 65
-			|| expression[i] <= 122 && expression[i] >= 97) && i != 0)
-			if (expression[i - 1] <= 57 && expression[i - 1] >= 48)
+        if (expression[i] <= 57 && expression[i] >= 48)
+             if (i == 0 || !(expression[i-1] <= 90 && expression[i-1] >= 65 || expression[i-1] <= 122 && expression[i-1] >= 97))
 			{
-				*msg = "Error, el nombre de las variables no puede comenzar por un numero.";
+                *msg = "Error, el nombre de las variables no puede comenzar por un numero.";
+                return false;
 			}
 	}
 
@@ -274,7 +277,7 @@ bool validInput(string expression, string* msg)
 //Funcion para limpiar el string de espacios
 void quitSpaces(string* str)
 {
-	for (unsigned int i = str->length() - 1; i > 0; i--)
+    for (int i = str->length() - 1; i >= 0; i--)
 		if ((*str)[i] == ' ')
 			str->replace(i, 1, "");
 }
