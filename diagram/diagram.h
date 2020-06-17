@@ -14,6 +14,7 @@
 #include "diagram/ginout.h"
 #include "diagram/gin.h"
 #include "diagram/gout.h"
+#include <unordered_map>
 
 class Diagram : public QGraphicsScene
 {
@@ -41,7 +42,8 @@ public slots:
     void cableIsCreated(GVertex* a, GVertex* b);
     void cableIsCliked(GCable* cable);
     void gateIsClicked(GGate* gate);
-    QString generateFunction(bool isSimulation);
+    QString generateFunction();
+    unordered_map<string,bool> getInValues();
 };
 
 #endif // DIAGRAM_H

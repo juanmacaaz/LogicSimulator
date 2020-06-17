@@ -54,7 +54,7 @@ void MainWindow::on_actionGenerate_function_triggered()
     QStringList functions;
     QStringList outputs;
 
-    for(QString& t : scene->generateFunction(false).split("\n"))
+    for(QString& t : scene->generateFunction().split("\n"))
         list << t;
 
     if (list.size() <= 2)
@@ -78,7 +78,33 @@ void MainWindow::on_actionGenerate_function_triggered()
 void MainWindow::on_actionGenerate_simulate_triggered()
 {
     QMessageBox msgBox;
-    msgBox.setText(scene->generateFunction(true));
+    QString msg = "";
+    Operation * func;
+    QStringList sub_expr;
+    QStringList expr = (scene->generateFunction()).split('\n');
+
+    for (QString e : expr)
+    {
+        sub_expr = e.split('=');
+
+        if (sub_expr.length() >= 2)
+        {
+            string s_func = sub_expr[1].toStdString();
+
+            quitSpaces(&s_func);
+            func = parse(s_func);
+
+            msg += sub_expr[0] + " = ";
+
+            if (func->eval(scene->getInValues()))
+                msg += '1';
+            else
+                msg += '0';
+
+             msg += '\n';
+        }
+    }
+    msgBox.setText(msg);
     msgBox.exec();
 }
 

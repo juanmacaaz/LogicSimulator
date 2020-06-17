@@ -126,30 +126,29 @@ Operation* parse(string expression, vector<string>* parenthesis)
 
 	counter = 0;
 	position = expression.find('(');
-	do {
-		if (position != string::npos)
-		{
-			for (unsigned int i = position + 1; i < expression.length(); i++)
-			{
-				if (expression[i] == '(')
-					counter++;
 
-				if (expression[i] == ')')
-				{
-					if (counter == 0)
-					{
-						parenthesis->push_back(expression.substr(position + 1, i - position - 1));
-						expression.replace(position, i - position + 1, to_string(parenthesis->size()-1));
-                        break;
-					}
-					else
-						counter--;
-				}
-			}
-			position = expression.find('(');
-		}
+    while (position != string::npos)
+    {
+        for (unsigned int i = position + 1; i < expression.length(); i++)
+        {
+            if (expression[i] == '(')
+                counter++;
+
+            if (expression[i] == ')')
+            {
+                if (counter == 0)
+                {
+                    parenthesis->push_back(expression.substr(position + 1, i - position - 1));
+                    expression.replace(position, i - position + 1, to_string(parenthesis->size()-1));
+                    break;
+                }
+                else
+                    counter--;
+            }
+        }
+        position = expression.find('(');
+    }
 		
-	} while (position != string::npos);
 
 	if (expression.find('+') != string::npos)
 	{
@@ -258,7 +257,7 @@ bool validInput(string expression, string* msg)
 			parenthesis--;
 
         if (expression[i] <= 57 && expression[i] >= 48)
-             if (i == 0 || !(expression[i-1] <= 90 && expression[i-1] >= 65 || expression[i-1] <= 122 && expression[i-1] >= 97))
+            if (i == 0 || !((expression[i-1] <= 90 && expression[i-1] >= 65) || (expression[i-1] <= 122 && expression[i-1] >= 97) || (expression[i - 1] <= 57 && expression[i - 1] >= 48)))
 			{
                 *msg = "Error, el nombre de las variables no puede comenzar por un numero.";
                 return false;

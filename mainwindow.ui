@@ -106,7 +106,7 @@
   </action>
   <action name="actionGenerate_simulate">
    <property name="text">
-    <string>Generate simulate</string>
+    <string>Simulate</string>
    </property>
   </action>
   <action name="actionHelp">
