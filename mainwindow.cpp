@@ -120,7 +120,7 @@ void MainWindow::on_actionSave_triggered()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"", tr("Diagram Files (*.dgm)"));
     QFile f(fileName);
-    f.open( QIODevice::WriteOnly);
+    f.open(QIODevice::WriteOnly);
     f.write(scene->saveDiagram().toUtf8());
     f.close();
 }
@@ -222,4 +222,50 @@ void MainWindow::on_actionHelp_triggered()
     msgBox.exec();
 }
 
+void vhdl(QString file_name, QString entity_name, int nVars, QString *names_in, int nOuts, QString *names_out, QString *expressions)
+{
+    QFile file(file_name);
+    QTextStream sFile(&file);
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    sFile << "library ieee;\nuse ieee.std_logic_1164.all;\n\n";
+    sFile << "entity " << entity_name << " is\n";
+    sFile << "\tport(";
 
+    for (int i = 0; i < nVars; ++i)
+    {
+        sFile << names_in[i];
+        if (i != nVars - 1)
+            sFile << ",";
+    }
+
+    sFile << ": in bit;\n\t\t";
+
+    for (int i = 0; i < nOuts; ++i)
+    {
+        sFile << names_out[i];
+        if (i != nOuts - 1)
+            sFile << ",";
+    }
+
+    sFile << ": out bit);\n";
+    sFile << "end entity;\n\n";
+
+    sFile << "architecture of " << entity_name << " is " << entity_name << "_arch\nbegin\n";
+
+    for (int i = 0; i < nOuts; ++i)
+    {
+        QString expression = expressions[i];
+
+        expression.replace(QRegularExpression("="), "<=");
+        expression.replace(QRegularExpression("+"), " or ");
+        expression.replace(QRegularExpression("*"), " and");
+        expression.replace(QRegularExpression("-"), " xor ");
+        expression.replace(QRegularExpression("!"), "not ");
+
+        sFile << "\t" << expression << endl;
+    }
+
+    sFile << "end architecture;";
+
+    file.close();
+}

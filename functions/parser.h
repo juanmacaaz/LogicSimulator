@@ -92,4 +92,6 @@ bool validInput(string expression, string* msg);
 
 void quitSpaces(string* str);
 
+
+
 //string mcCluskey(vector<int> minterms, vector<string> names);

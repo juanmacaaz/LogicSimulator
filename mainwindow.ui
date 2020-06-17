@@ -65,6 +65,7 @@
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
+    <addaction name="actionExport_to_vhdl"/>
    </widget>
    <widget class="QMenu" name="menuFunctions">
     <property name="title">
@@ -112,6 +113,11 @@
   <action name="actionHelp">
    <property name="text">
     <string>About...</string>
+   </property>
+  </action>
+  <action name="actionExport_to_vhdl">
+   <property name="text">
+    <string>Export to vhdl</string>
    </property>
   </action>
  </widget>
