@@ -3,8 +3,8 @@
 
 #include <QGraphicsLineItem>
 #include <QPen>
-#include "diagram/gvertex.h"
 #include <QDynamicPropertyChangeEvent>
+#include "diagram/gvertex.h"
 
 class GCable : public QObject, public QGraphicsLineItem
 {
@@ -12,8 +12,8 @@ class GCable : public QObject, public QGraphicsLineItem
 public:
     GCable(GVertex* a, GVertex* b);
     bool isEqual(GCable* cable);
-    GVertex* getVertexA() {return m_a;}
-    GVertex* getVertexB() {return m_b;}
+    GVertex* getVertexA() const {return m_a;}
+    GVertex* getVertexB() const {return m_b;}
 private:
     GVertex* m_a;
     GVertex* m_b;

@@ -9,6 +9,7 @@
 #include <QFileDialog>
 #include <QTableWidget>
 #include <QHBoxLayout>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QLineEdit>
 #include <QInputDialog>
@@ -17,7 +18,6 @@
 #include "diagram/diagram.h"
 #include "cursor/gcursor.h"
 #include "toolbar/diagramtoolbar.h"
-#include "functions/parser.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

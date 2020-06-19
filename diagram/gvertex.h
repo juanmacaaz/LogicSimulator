@@ -2,6 +2,7 @@
 #define VERTEX_H
 
 #include <QGraphicsEllipseItem>
+#include <QWidget>
 
 class GGate;
 class GCable;

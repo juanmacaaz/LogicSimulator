@@ -1,5 +1,5 @@
 #include "diagramtoolbar.h"
-#include <QDebug>
+
 DiagramToolBar::DiagramToolBar(GCursor *cursor)
 {
     setContextMenuPolicy(Qt::NoContextMenu);
@@ -48,7 +48,8 @@ DiagramToolBar::DiagramToolBar(GCursor *cursor)
                                  GGate::OUTPUT,
                                  "Output Gate",
                                  QIcon(QDir().absolutePath()+"/img/output.png")));
-    for (DToolButton* button : m_toolButtons){
+    for (DToolButton* button : m_toolButtons)
+    {
         addWidget(button);
         QObject::connect(button, SIGNAL(toolButtonClicked()), this, SLOT(toolButtonClicked()));
     }
@@ -56,7 +57,8 @@ DiagramToolBar::DiagramToolBar(GCursor *cursor)
 
 void DiagramToolBar::toolButtonClicked()
 {
-    for (DToolButton* button : m_toolButtons){
+    for (DToolButton* button : m_toolButtons)
+    {
            button->setChecked(false);
     }
 }

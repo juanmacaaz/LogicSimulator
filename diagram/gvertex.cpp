@@ -1,5 +1,4 @@
 #include "diagram/gvertex.h"
-#include "QWidget"
 
 GVertex::GVertex(int x, int y, int w, int h, Position position, GGate* parent)
 {
@@ -10,11 +9,14 @@ GVertex::GVertex(int x, int y, int w, int h, Position position, GGate* parent)
     setRect(x,y,w,h);
 }
 
-void GVertex::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-    if(!m_selected) {
+void GVertex::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if(!m_selected)
+    {
         setBrush(Qt::blue);
         m_selected = true;
-    }else {
+    }else
+    {
         setBrush(QBrush());
         m_selected = false;
     }

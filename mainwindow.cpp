@@ -1,8 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QMessageBox>
-#include <QDebug>
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -57,6 +54,13 @@ void MainWindow::on_actionGenerate_function_triggered()
     for(QString& t : scene->generateFunction().split("\n"))
         list << t;
 
+    if (list[0] == ""){
+        QMessageBox msgBox;
+        msgBox.setText("No se puede computar.");
+        msgBox.exec();
+        return;
+    }
+
     if (list.size() <= 2)
     {
         input->setText(list[0].split("=")[1]);
@@ -69,7 +73,7 @@ void MainWindow::on_actionGenerate_function_triggered()
             functions << t.split("=")[1];
             outputs   << t.split("=")[0];
         }
-        QString text = QInputDialog::getItem(this, tr("Multiple outputs"), tr("Choise a output"), outputs);
+        QString text = QInputDialog::getItem(this, tr("Multiple outputs"), tr("Choise a output"), outputs, 0, false);
         input->setText(functions[outputs.indexOf(text)]);
     }
     on_btn_click();

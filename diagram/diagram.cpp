@@ -1,6 +1,4 @@
 #include "diagram/diagram.h"
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsView>
 
 Diagram::Diagram(GCursor* cursor)
 {
@@ -24,7 +22,8 @@ Diagram::~Diagram()
     }
 }
 
-void Diagram::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
+void Diagram::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
     if(mouseEvent->button() == Qt::LeftButton)
     {
         if(m_cursor->getCursor() == GCursor::GATE)
@@ -54,11 +53,11 @@ GGate* Diagram::addGate(GGate::Element type, int x, int y, long id)
     GGate *newGate;
     switch (type)
     {
-        case GGate::AND: newGate = new GAnd(x, y, id); break;
-        case GGate::OR:  newGate = new GOr (x, y, id); break;
-        case GGate::INV: newGate = new GInv(x, y, id); break;
-        case GGate::XOR: newGate = new GXor(x, y, id); break;
-        default: newGate = new GGate(0,0,0); break;
+    case GGate::AND: newGate = new GAnd(x, y, id); break;
+    case GGate::OR:  newGate = new GOr (x, y, id); break;
+    case GGate::INV: newGate = new GInv(x, y, id); break;
+    case GGate::XOR: newGate = new GXor(x, y, id); break;
+    default: newGate = new GGate(0,0,0); break;
     }
     addItem(newGate);
     addItem(newGate->getVertexA());
@@ -132,6 +131,7 @@ void Diagram::addCable(GVertex* a, GVertex* b)
         m_lines.push_back(line);
         addItem(line);
         QObject::connect(line, SIGNAL(cableClick(GCable*)), this, SLOT(cableIsCliked(GCable*)));
+        realtimeSimulate();
     }
 }
 
@@ -142,9 +142,10 @@ void Diagram::deleteCable(GCable* cable)
     cable->getVertexB()->removeCable(cable);
     m_lines.removeAll(cable);
     delete cable;
+    realtimeSimulate();
 }
 
-GInOut* Diagram::addInOut(GGate::Element type, int x, int y, long id, QString name)
+GInOut* Diagram::addInOut(GGate::Element type, int x, int y, long id, const QString& name)
 {
     GInOut* newInout;
 
@@ -168,7 +169,7 @@ GInOut* Diagram::addInOut(GGate::Element type, int x, int y, long id, QString na
     newInout->getText()->setTextInteractionFlags(Qt::TextEditorInteraction);
     addItem(newInout->getText());
     QObject::connect(newInout, SIGNAL(gateClicked(GGate*)), this, SLOT(gateIsClicked(GGate*)));
-
+    QObject::connect(newInout->getText(), SIGNAL(nameChange(const QString&, bool&)), this, SLOT(nameChange(const QString&, bool&)));
     return newInout;
 }
 
@@ -180,6 +181,58 @@ bool Diagram::isInCableList(GCable *cable)
             return true;
     }
     return false;
+}
+
+void Diagram::realtimeSimulate()
+{
+    QString msg = "";
+    Operation * func;
+    QStringList sub_expr;
+    QStringList expr = (generateFunction()).split('\n');
+    expr.removeLast();
+    for (GGate* gate : m_gates)
+    {
+        if(GOut* v = dynamic_cast<GOut*>(gate))
+        {
+            v->disActive();
+        }
+    }
+    for (QString e : expr)
+    {
+        msg = "";
+        sub_expr = e.split('=');
+
+        if (sub_expr.length() >= 2)
+        {
+            string s_func = sub_expr[1].toStdString();
+
+            quitSpaces(&s_func);
+            func = parse(s_func);
+
+            msg += sub_expr[0] + " = ";
+
+            if (func->eval(getInValues()))
+                msg += '1';
+            else
+                msg += '0';
+        }
+        for (GGate* gate : m_gates)
+        {
+            if(GOut* v = dynamic_cast<GOut*>(gate))
+            {
+                QString txt  = v->getText()->toPlainText();
+                QString txt2 = msg.remove(" ").split("=")[0];
+                QString txt3 = msg.remove(" ").split("=")[1];
+                if (txt == txt2)
+                {
+                    if(txt3 == "1") {
+                        v->active();
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 QString Diagram::generateFunction()
@@ -227,6 +280,26 @@ unordered_map<string,bool> Diagram::getInValues()
 
     return env;
 }
+
+void Diagram::nameChange(const QString &varName, bool &repited)
+{
+    int repitedTimes = 0;
+    for (GGate* gate : m_gates)
+    {
+        if(GInOut* v = dynamic_cast<GInOut*>(gate))
+        {
+            if (v->getText()->toPlainText() == varName)
+            {
+                repitedTimes++;
+            }
+        }
+    }
+    if(repitedTimes < 2)
+        repited = false;
+    else
+        repited = true;
+}
+
 
 Point Diagram::getParentInfo(GGate* gate)
 {
@@ -299,6 +372,7 @@ void Diagram::gateIsClicked(GGate *gate)
                 v->active();
             }
         }
+        realtimeSimulate();
     }
     update(0,0,width(),height());
 }

@@ -3,18 +3,25 @@
 
 #include <QGraphicsScene>
 #include <QList>
+#include <QDebug>
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsView>
+#include <unordered_map>
+
 #include "diagram/gand.h"
 #include "diagram/gor.h"
 #include "diagram/ginv.h"
 #include "diagram/gxor.h"
 #include "diagram/gcable.h"
 #include "diagram/ggate.h"
-#include "conections/Conections.h"
-#include "cursor/gcursor.h"
 #include "diagram/ginout.h"
 #include "diagram/gin.h"
 #include "diagram/gout.h"
-#include <unordered_map>
+
+#include "conections/Conections.h"
+#include "cursor/gcursor.h"
+
+#include "functions/parser.h"
 
 class Diagram : public QGraphicsScene
 {
@@ -35,15 +42,17 @@ private:
     void deleteGate(GGate* gate);
     void addCable(GVertex* a, GVertex* b);
     void deleteCable(GCable* cable);
-    GInOut* addInOut(GGate::Element type, int x, int y, long id, QString name);
+    GInOut* addInOut(GGate::Element type, int x, int y, long id, const QString& name);
     Point getParentInfo(GGate* gate);
     bool isInCableList(GCable* cable);
+    void realtimeSimulate();
 public slots:
     void cableIsCreated(GVertex* a, GVertex* b);
     void cableIsCliked(GCable* cable);
     void gateIsClicked(GGate* gate);
     QString generateFunction();
     unordered_map<string,bool> getInValues();
+    void nameChange(const QString& varName, bool& repited);
 };
 
 #endif // DIAGRAM_H

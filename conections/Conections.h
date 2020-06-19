@@ -1,7 +1,10 @@
 #include <list>
 #include <vector>
-#include "conections/Cable.h"
+#include <string>
+#include <algorithm>
+#include <cctype>
 #include <map>
+#include "conections/Cable.h"
 
 using namespace std;
 
@@ -9,7 +12,7 @@ class Conections {
   private:
     map<long, string> m_varNames;
     vector <Cable> m_cable;
-    string toExpresion (const Cable &cable, int &deep) const;
+    string toExpresion (const Cable &cable, int &deep, bool& containVars) const;
   public:
     Conections() {};
     bool isValid(vector<Cable> &outCable) const;

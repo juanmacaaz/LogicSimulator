@@ -9,9 +9,14 @@ void GText::focusInEvent(QFocusEvent *event)
 void GText::focusOutEvent(QFocusEvent *event)
 {
     QString actualName = toPlainText();
-    if (actualName.contains(" ") || actualName[0].isDigit() || actualName == "") {
+    bool repitedId;
+    emit nameChange(actualName, repitedId);
+    if (actualName.contains(" ") || actualName[0].isDigit() || actualName == "" || repitedId)
+    {
         setPlainText(m_tmpName);
-    }else {
+
+    }else
+    {
         setPlainText(actualName.remove("\n"));
     }
     QGraphicsItem::focusOutEvent(event);

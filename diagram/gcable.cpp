@@ -19,8 +19,8 @@ bool GCable::isEqual(GCable* cable)
 
 void GCable::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    emit cableClick(this);
     QGraphicsItem::mousePressEvent(event);
+    emit cableClick(this);
 }
 
 
