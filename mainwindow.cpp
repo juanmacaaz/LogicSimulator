@@ -129,11 +129,6 @@ void MainWindow::on_actionSave_triggered()
     f.close();
 }
 
-void MainWindow::on_actionTest_Button_triggered()
-{
-   qInfo() << scene->saveDiagram();
-}
-
 void MainWindow::on_actionOpen_triggered()
 {
     QString binary;
@@ -226,7 +221,7 @@ void MainWindow::on_actionHelp_triggered()
     msgBox.exec();
 }
 
-void vhdl(QString file_name, QString entity_name, int nVars, QString *names_in, int nOuts, QString *names_out, QString *expressions)
+void vhdl(QString file_name, QString entity_name, int nVars, QStringList names_in, int nOuts, QStringList names_out, QStringList expressions)
 {
     QFile file(file_name);
     QTextStream sFile(&file);
@@ -261,10 +256,10 @@ void vhdl(QString file_name, QString entity_name, int nVars, QString *names_in, 
         QString expression = expressions[i];
 
         expression.replace(QRegularExpression("="), "<=");
-        expression.replace(QRegularExpression("+"), " or ");
-        expression.replace(QRegularExpression("*"), " and");
-        expression.replace(QRegularExpression("-"), " xor ");
-        expression.replace(QRegularExpression("!"), "not ");
+        expression.replace(QRegularExpression(QRegularExpression::escape("+")), " or ");
+        expression.replace(QRegularExpression(QRegularExpression::escape("*")), " and ");
+        expression.replace(QRegularExpression(QRegularExpression::escape("-")), " xor ");
+        expression.replace(QRegularExpression("!"), " not ");
 
         sFile << "\t" << expression << endl;
     }
@@ -272,4 +267,52 @@ void vhdl(QString file_name, QString entity_name, int nVars, QString *names_in, 
     sFile << "end architecture;";
 
     file.close();
+}
+
+void MainWindow::on_actionExport_to_vhdl_triggered()
+{
+    string entityName = QInputDialog::getText(this, tr("Entity name"), tr("Put the name of the entity")).toUtf8().constData();
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"", tr("Diagram Files (*.vhd)"));
+
+    quitSpaces(&entityName);
+
+    string strFunction = scene->generateFunction().toUtf8().constData();
+    quitSpaces(&strFunction);
+    QStringList functions = QString(strFunction.c_str()).split("\n");
+
+    vector<Operation*> parsedFunctions;
+    QStringList names_out;
+
+    functions.pop_back();
+
+    for (int i = 0; i < functions.size(); i++)
+    {
+      names_out << (functions[i].split('='))[0];
+    }
+
+    for(QString function : functions)
+    {
+        string strFunc = (function.split("=")[1]).toUtf8().constData();
+        quitSpaces(&strFunc);
+        parsedFunctions.push_back(parse(strFunc));
+    }
+
+    std::set<string> inNamesList;
+    QStringList inNamesListParsed;
+    int nVars = 0;
+    vector<string> names;
+    for (Operation* operation : parsedFunctions)
+    {
+        operation->getInfo(&nVars, &names);
+        for (string& v : names)
+        {
+          inNamesList.insert(v);
+        }
+    }
+    for (string s : inNamesList)
+    {
+      inNamesListParsed << s.c_str();
+    }
+
+    vhdl(fileName, QString(entityName.c_str()), inNamesListParsed.size(), inNamesListParsed, functions.size(), names_out, functions);
 }

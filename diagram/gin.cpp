@@ -3,6 +3,7 @@
 GIn::GIn(int x,int y, long id):GInOut(x, y, id) {
     setPixmap(QPixmap(QDir().absolutePath()+"/img/inputD.png"));
     m_active = false;
+    n++;
 }
 
 void GIn::active()
@@ -16,3 +17,5 @@ void GIn::disActive()
     setPixmap(QPixmap(QDir().absolutePath()+"/img/inputD.png"));
     m_active = false;
 }
+
+int GIn::n{0};

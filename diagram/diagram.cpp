@@ -34,15 +34,18 @@ void Diagram::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         {
             long id = getId();
             QString name;
+            int nameID;
             if (m_cursor->getElement() == GGate::INPUT)
             {
                 name = "in";
+                nameID = GIn::n;
             }
             else
             {
                 name = "out";
+                nameID = GOut::n;
             }
-            addInOut(m_cursor->getElement(), mouseEvent->scenePos().x(), mouseEvent->scenePos().y(), id, name+QString::number(id));
+            addInOut(m_cursor->getElement(), mouseEvent->scenePos().x(), mouseEvent->scenePos().y(), id, name+QString::number(nameID));
         }
     }
     QGraphicsScene::mousePressEvent(mouseEvent);

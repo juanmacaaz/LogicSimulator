@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <set>
 #include <QMainWindow>
 #include <QtCore>
 #include <QtGui>
@@ -39,13 +40,13 @@ private slots:
 
     void on_actionSave_triggered();
 
-    void on_actionTest_Button_triggered();
-
     void on_actionOpen_triggered();
 
     void on_actionHelp_triggered();
 
     void on_btn_click();
+
+    void on_actionExport_to_vhdl_triggered();
 
 private:
 
