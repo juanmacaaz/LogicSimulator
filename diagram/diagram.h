@@ -37,6 +37,7 @@ private:
     QList<GCable*> m_lines;
     long m_ids;
     long getId();
+    QString nIOName(const QString& io);
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
     GGate* addGate(GGate::Element type, int x, int y, long id);
     void deleteGate(GGate* gate);

@@ -9,11 +9,9 @@ private:
     bool m_active;
 public:
     GOut(int x,int y, long id);
-    ~GOut() {n--;}
     bool isActive() const {return m_active;}
     void active();
     void disActive();
-    static int n;
 };
 
 #endif // GOUT_H

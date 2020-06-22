@@ -34,18 +34,15 @@ void Diagram::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         {
             long id = getId();
             QString name;
-            int nameID;
             if (m_cursor->getElement() == GGate::INPUT)
             {
-                name = "in";
-                nameID = GIn::n;
+                name = nIOName("in");
             }
             else
             {
-                name = "out";
-                nameID = GOut::n;
+                name = nIOName("out");
             }
-            addInOut(m_cursor->getElement(), mouseEvent->scenePos().x(), mouseEvent->scenePos().y(), id, name+QString::number(nameID));
+            addInOut(m_cursor->getElement(), mouseEvent->scenePos().x(), mouseEvent->scenePos().y(), id, name);
         }
     }
     QGraphicsScene::mousePressEvent(mouseEvent);
@@ -383,6 +380,36 @@ void Diagram::gateIsClicked(GGate *gate)
 long Diagram::getId()
 {
     return m_ids++;
+}
+
+QString Diagram::nIOName(const QString& io)
+{
+    if(m_gates.length() == 0)
+    {
+        return QString(io+"0");
+    }
+    QString name;
+    bool found = false;
+    int i = 0;
+    while (!found)
+    {
+        name = io + QString::number(i);
+        bool exist = false;
+        for (GGate* gate: m_gates)
+        {
+            if (GInOut* g = dynamic_cast<GInOut*>(gate))
+            {
+                if (g->getText()->toPlainText() == name)
+                {
+                    exist = true;
+                }
+            }
+        }
+        if(!exist)
+            found = true;
+        i++;
+    }
+    return name;
 }
 
 QString Diagram::saveDiagram()

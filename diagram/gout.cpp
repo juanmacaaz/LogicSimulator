@@ -2,7 +2,6 @@
 
 GOut::GOut(int x,int y, long id):GInOut(x, y, id) {
     setPixmap(QPixmap(QDir().absolutePath()+"/img/outputD.png"));
-    n++;
 }
 
 void GOut::active()
@@ -16,5 +15,3 @@ void GOut::disActive()
     setPixmap(QPixmap(QDir().absolutePath()+"/img/outputD.png"));
     m_active = false;
 }
-
-int GOut::n{0};
